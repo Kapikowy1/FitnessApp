@@ -1,18 +1,29 @@
 package com.example.testproject;
 
-public class MainModel {
-    String name,course,email,turl;
+import java.io.Serializable;
+
+public class MainModel implements Serializable {
+    String name,course,email,turl,description;
 
 
     MainModel(){
 
     }
 
-    public MainModel(String name, String course, String email, String turl) {
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public MainModel(String name, String course, String email, String turl, String description) {
         this.name = name;
         this.course = course;
         this.email = email;
         this.turl = turl;
+        this.description = description;
     }
     // kontruktor uzywany jest aby stworzyc instancje klasy Mainmodel z wartosciami name,course
     // email oraz turl ,które nie mają żadnych określonych z góry wartości, wartosci sa ustawianie pozniej

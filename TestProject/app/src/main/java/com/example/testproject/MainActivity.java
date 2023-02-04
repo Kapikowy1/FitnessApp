@@ -104,4 +104,6 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);
     }
+
+
 }
