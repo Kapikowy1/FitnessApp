@@ -1,6 +1,7 @@
 package com.example.testproject;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,7 +11,10 @@ import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
@@ -22,7 +26,11 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
 
     RecyclerView recyclerView;
     MainAdapter mainAdapter;
-
+    Button sortButton1,sortButton2,sortButton3,sortButton4;
+    private boolean isSorted1=false;
+    private boolean isSorted2=false;
+    private boolean isSorted3=false;
+    private boolean isSorted4=false;
     @Override
     protected void onCreate(Bundle savedInstanceState) { //Metoda oncreate jest uruchamiana na starcie activit
         // obiektBundle przekazywany jest jako argument metody onCreate nazwany savedInstanceState
@@ -35,8 +43,12 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         setContentView(R.layout.activity_main);//setContentView jest metodą, która ustawia widok dla danej
         // activity . R jest klasą generowaną automatycznie przez android studio przechowuje odwolania do
         // zasobów natomiast layout odwoluje sie do folderu layout a activity main do pliku xml w tym folderze
-        recyclerView=(RecyclerView) findViewById(R.id.rv);//inicjuje obiekt klasy RecyclerView o nazwie recyclerView
-        // i przypisuje do niego element interfejsu o id rv
+        recyclerView=(RecyclerView) findViewById(R.id.rv);//inicjuje obiekt klasy RecyclerView o nazwie recyclerView i przypisuje do niego element interfejsu o id rv
+        sortButton1 = findViewById(R.id.SortB);
+        sortButton2=findViewById(R.id.SortC);
+        sortButton3=findViewById(R.id.SortD);
+        sortButton4=findViewById(R.id.SortG);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//LayoutManager jest odpowiedzialny za
         // pozycjonowanie elementów w RecyclerView oraz zarządzanie ich rozmiarem i przewijaniem
         // LinearLayoutManager pozycjonuje elementy  linearnie
@@ -52,7 +64,102 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         // robi to za pomocą utworzonego wczesniej obiektu mainAdapter
         // adapter odpowiada za laczenie danych z interfejsem uzytkownika i przekazywanie ich do
         // RecyclerView, który wyświetla je na ekranie
+
+        sortButton1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isSorted1) {
+                    setButtonColors(false, sortButton1);
+                    isSorted1 = false;
+                } else {
+                    setButtonColors(true, sortButton1);
+                    isSorted2=false;
+                    isSorted3=false;
+                    isSorted4=false;
+                    txtSortB();
+                    isSorted1 = true;
+                }
+            }
+        });
+        sortButton2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isSorted2) {
+                    setButtonColors(false, sortButton2);
+                    unsortData();
+                    isSorted2 = false;
+                } else {
+                    setButtonColors(true, sortButton2);
+                    isSorted1=false;
+                    isSorted3=false;
+                    isSorted4=false;
+                    txtSortC();
+                    isSorted2 = true;
+                }
+            }
+        });
+        sortButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isSorted3) {
+                    setButtonColors(false, sortButton3);
+                    unsortData();
+                    isSorted3 = false;
+                } else {
+                    setButtonColors(true, sortButton3);
+                    isSorted1=false;
+                    isSorted2=false;
+                    isSorted4=false;
+                    txtSortD();
+                    isSorted3 = true;
+
+                }
+            }
+        });
+        sortButton4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isSorted4) {
+                    setButtonColors(false, sortButton4);
+                    unsortData();
+                    isSorted4 = false;
+                } else {
+                    setButtonColors(true, sortButton4);
+                    isSorted1=false;
+                    isSorted2=false;
+                    isSorted3=false;
+                    txtSortG();
+                    isSorted4 = true;
+
+                }
+            }
+        });
     }
+
+    private void setButtonColors(boolean isSorted, Button button) {
+        sortButton1.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+        sortButton2.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+        sortButton3.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+        sortButton4.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+        if (!isSorted) {
+            unsortData();
+        } else {
+            button.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.teal_200));
+        }
+    }
+
+
+    private void unsortData() {
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers");
+
+        FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
+                .setQuery(query, MainModel.class)
+                .build();
+        mainAdapter = new MainAdapter(options);
+        mainAdapter.startListening();
+        recyclerView.setAdapter(mainAdapter);
+    }
+
     @Override //notacja @Override jest używana po to aby oznaczyć metodę, która jest nadpisaniem klasy nadrzędnej
     // ma na celu kontynuacje implementacji z klasy nadrzędnej
     protected void onStart() {
@@ -92,14 +199,54 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         });
         return super.onCreateOptionsMenu(menu);
     }
-    private void  txtSearch(String str) {  //metoda TxtSearch o atrybucie str bedacym tekstem
-        FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()//
-                // tworze nowy obiekt FirebaseRecyclerOptions o nazwie options o wlasciwosciach klasy MainModel
-                // a następnie wywołuje Builder odpowiedzialny za konfiguracje opcji w FirebaseRecyclerOptions
-                .setQuery(FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("name")
-                        //odwoluje sie do lokalizacji danych w bazie danych
-                        .startAt(str).endAt(str+"\uf8ff"), MainModel.class) // filtruje metody
-                .build(); //metoda kończącza proces konfigurowania opcji i zwracająca obiekt MainModel do FirebaseRecyclerOptions
+    private void  txtSearch(String str) {
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("name").startAt(str).endAt(str+"\uf8ff");
+
+        FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
+                .setQuery(query, MainModel.class)
+                .build();
+        mainAdapter = new MainAdapter(options);
+        mainAdapter.startListening();
+        recyclerView.setAdapter(mainAdapter);
+    }
+
+
+    private void txtSortB() {
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Bcurs").endAt("Bcurs"+"\uf8ff");
+
+        FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
+                .setQuery(query, MainModel.class)
+                .build();
+        mainAdapter = new MainAdapter(options);
+        mainAdapter.startListening();
+        recyclerView.setAdapter(mainAdapter);
+    }
+    private void txtSortC() {
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Ccurs").endAt("Ccurs"+"\uf8ff");
+
+        FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
+                .setQuery(query, MainModel.class)
+                .build();
+        mainAdapter = new MainAdapter(options);
+        mainAdapter.startListening();
+        recyclerView.setAdapter(mainAdapter);
+    }
+    private void txtSortD() {
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Dcurs").endAt("Dcurs"+"\uf8ff");
+
+        FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
+                .setQuery(query, MainModel.class)
+                .build();
+        mainAdapter = new MainAdapter(options);
+        mainAdapter.startListening();
+        recyclerView.setAdapter(mainAdapter);
+    }
+    private void txtSortG() {
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Gcurs").endAt("Gcurs"+"\uf8ff");
+
+        FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
+                .setQuery(query, MainModel.class)
+                .build();
         mainAdapter = new MainAdapter(options);
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);

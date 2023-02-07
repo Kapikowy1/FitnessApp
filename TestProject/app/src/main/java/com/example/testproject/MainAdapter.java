@@ -57,9 +57,7 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel,MainAdapter.m
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_item,parent,false);//
-
         return new myViewHolder(view);
     }
 
@@ -69,7 +67,6 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel,MainAdapter.m
         CircleImageView img;
         TextView name, course, email;
 
-
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             img = (CircleImageView) itemView.findViewById(R.id.img1);
@@ -77,15 +74,7 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel,MainAdapter.m
             course = (TextView) itemView.findViewById(R.id.coursetext);
             email = (TextView) itemView.findViewById(R.id.emailtext);
             itemView.setOnClickListener(this);
-            /*itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    Intent intent=new Intent(itemView.getContext(),TeacherActivity.class);
-                    intent.putExtra("model",model);
-                    itemView.getContext().startActivity(intent);
-                }
-            });*/
         }
 
         @Override
@@ -96,7 +85,6 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel,MainAdapter.m
             String imageUrl = model.getTurl();
             String imageDesc=model.getDescription();
             Toast.makeText(itemView.getContext(), "position"+position, Toast.LENGTH_SHORT).show();
-
 
             Intent intent=new Intent(itemView.getContext(),TeacherActivity.class);
             intent.putExtra("desc",imageDesc);

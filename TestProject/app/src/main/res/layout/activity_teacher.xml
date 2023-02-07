@@ -31,4 +31,19 @@
         android:layout_height="wrap_content"
         android:text="Description"
         android:layout_gravity="center"/>
+
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/saveRecipe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Zapisz przepis" />
+
+    <Button
+        android:layout_gravity="center"
+        android:id="@+id/myRecipes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Moje przepisy" />
+
 </androidx.appcompat.widget.LinearLayoutCompat>
