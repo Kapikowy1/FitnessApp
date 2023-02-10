@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         // adapter odpowiada za laczenie danych z interfejsem uzytkownika i przekazywanie ich do
         // RecyclerView, który wyświetla je na ekranie
 
+        //SORTOWANIE
         sortButton1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,46 +160,6 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);
     }
-
-    @Override //notacja @Override jest używana po to aby oznaczyć metodę, która jest nadpisaniem klasy nadrzędnej
-    // ma na celu kontynuacje implementacji z klasy nadrzędnej
-    protected void onStart() {
-        super.onStart();
-        mainAdapter.startListening();
-    }
-    @Override
-    protected void onStop() {
-        super.onStop();
-        mainAdapter.stopListening();
-    }
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) { // metoda jest wywoływana gdy jest tworzone menu opcji
-        // dla danego activity
-        getMenuInflater().inflate(R.menu.search,menu);//ta linia odpowiada za umieszczenie elementów
-        // z pliku xml o nazwie search xml do obiektu menu
-        MenuItem item =menu.findItem(R.id.search);// pobiera element xml o nazwie search
-        SearchView searchView=(SearchView) item.getActionView();//pobiera referencje do elementu
-        // typu SearchView ktory jest widokiem dla elementu menu o id search
-        searchView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {//przypisuje
-            // listener do searchView, który pozwala na reakcje miedzy tekstem a użytkownikiem
-            @Override
-            public boolean onQueryTextSubmit(String query) {//onQueryTextSubmit jest metoda,która jest
-                // wywolywana gdy uzytkownik wciska przycisk search przyjmuje arg string ktory jest
-                // tekstem wprowadzonym przez uzytkownika
-                txtSearch(query); //metoda wywolywana z elementem query czyli wprowadzonym przez uzytkownika tekstem
-                return false;
-            }
-            @Override
-            public boolean onQueryTextChange(String newText) {// metoda onQueryTextChange jest
-                // metoda ktora jest wywolywana gdy uzytkownik zmienia text w polu
-                txtSearch(newText);
-                return false; // odpowiada za to ,żebypo wykonanynm zdarzeniu przekazać informacje do kolejnych listenerow
-            }
-        });
-        return super.onCreateOptionsMenu(menu);
-    }
     private void  txtSearch(String str) {
         Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("name").startAt(str).endAt(str+"\uf8ff");
 
@@ -251,6 +212,52 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);
     }
+    //SORTOWANIE
+
+
+    //WYSZUKIWANIE WYNIKOW
+    @Override //notacja @Override jest używana po to aby oznaczyć metodę, która jest nadpisaniem klasy nadrzędnej
+    // ma na celu kontynuacje implementacji z klasy nadrzędnej
+    protected void onStart() {
+        super.onStart();
+        mainAdapter.startListening();
+    }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mainAdapter.stopListening();
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) { // metoda jest wywoływana gdy jest tworzone menu opcji
+        // dla danego activity
+        getMenuInflater().inflate(R.menu.search,menu);//ta linia odpowiada za umieszczenie elementów
+        // z pliku xml o nazwie search xml do obiektu menu
+        MenuItem item =menu.findItem(R.id.search);// pobiera element xml o nazwie search
+        SearchView searchView=(SearchView) item.getActionView();//pobiera referencje do elementu
+        // typu SearchView ktory jest widokiem dla elementu menu o id search
+        searchView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {//przypisuje
+            // listener do searchView, który pozwala na reakcje miedzy tekstem a użytkownikiem
+            @Override
+            public boolean onQueryTextSubmit(String query) {//onQueryTextSubmit jest metoda,która jest
+                // wywolywana gdy uzytkownik wciska przycisk search przyjmuje arg string ktory jest
+                // tekstem wprowadzonym przez uzytkownika
+                txtSearch(query); //metoda wywolywana z elementem query czyli wprowadzonym przez uzytkownika tekstem
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {// metoda onQueryTextChange jest
+                // metoda ktora jest wywolywana gdy uzytkownik zmienia text w polu
+                txtSearch(newText);
+                return false; // odpowiada za to ,żebypo wykonanynm zdarzeniu przekazać informacje do kolejnych listenerow
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
+    //WYSZUKIWANIE WYNIKOW
+
+
 
 
 }

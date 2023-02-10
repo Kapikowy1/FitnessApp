@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RegisterActivity">
+
+
+    <EditText
+        android:id="@+id/editTextTextEmailAddressreg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="E-mail"
+        android:background="@color/purple_200"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="100dp"
+
+        />
+
+    <EditText
+        android:id="@+id/editTextTextPassword2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="Password"
+
+        android:ems="10"
+        android:background="@color/purple_200"
+        android:inputType="textPassword"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="100dp" />
+
+    <EditText
+        android:id="@+id/editTextName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Name"
+        android:background="@color/purple_200"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="250dp"
+        android:layout_marginLeft="100dp"
+
+        />
+
+    <EditText
+        android:id="@+id/editTextnumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="number"
+        android:background="@color/purple_200"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="350dp"
+        android:layout_marginLeft="100dp"
+
+        />
+
+    <Button
+        android:id="@+id/registeruserbtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Register user"
+        android:layout_marginTop="450dp"
+        android:layout_marginLeft="160dp"
+        />
+
+</RelativeLayout>
