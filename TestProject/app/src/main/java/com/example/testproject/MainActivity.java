@@ -5,6 +5,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -20,17 +22,22 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity { //klasa MainActivityJava rozszerza klase Appcompatactivity czyli jest jej podklasą
 
     RecyclerView recyclerView;
     MainAdapter mainAdapter;
     Button sortButton1,sortButton2,sortButton3,sortButton4;
+
+
     private boolean isSorted1=false;
     private boolean isSorted2=false;
     private boolean isSorted3=false;
     private boolean isSorted4=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) { //Metoda oncreate jest uruchamiana na starcie activit
         // obiektBundle przekazywany jest jako argument metody onCreate nazwany savedInstanceState
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         setContentView(R.layout.activity_main);//setContentView jest metodą, która ustawia widok dla danej
         // activity . R jest klasą generowaną automatycznie przez android studio przechowuje odwolania do
         // zasobów natomiast layout odwoluje sie do folderu layout a activity main do pliku xml w tym folderze
+
         recyclerView=(RecyclerView) findViewById(R.id.rv);//inicjuje obiekt klasy RecyclerView o nazwie recyclerView i przypisuje do niego element interfejsu o id rv
         sortButton1 = findViewById(R.id.SortB);
         sortButton2=findViewById(R.id.SortC);
@@ -58,6 +66,8 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
                         .setQuery(FirebaseDatabase.getInstance().getReference().child("teachers"),MainModel.class)  //metoda ta ustawia zapytanie do bazy danych Firebase,które pobiera dane z dziecka teachers z bazy danych,MainModel.class jest klasą ktorej mapowane dane beda pobrane z bazy danych
                         .build();//metoda kończąca proces konfigurowania opcji i zwraca obiekt do FirebaseRecyclerOptions
         //W skrócie, ta linia kodu tworzy obiekt FirebaseRecyclerOptions, który pozwala na pobranie danych z dziecka "teachers" w bazie danych Firebase i mapowanie ich na obiekty typu MainModel, które będą wykorzystywane przez adapter RecyclerView.
+
+
         mainAdapter=new MainAdapter(options);// tworzy nowy obiekt MainAdapter przekazujac do niego obiekt options z wyżej i przypisuje go do zmiennej
         // ustawia utworzony obiekt jako adapter dla RecyclerView
         recyclerView.setAdapter(mainAdapter); //ustawia adapter,który jest odpowiedzialny za wyświetlenie
@@ -256,6 +266,8 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         return super.onCreateOptionsMenu(menu);
     }
     //WYSZUKIWANIE WYNIKOW
+
+
 
 
 

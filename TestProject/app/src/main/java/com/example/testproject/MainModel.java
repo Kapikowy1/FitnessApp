@@ -2,31 +2,25 @@ package com.example.testproject;
 
 import java.io.Serializable;
 
-public class MainModel implements Serializable {
-    String name,course,email,turl,description;
+public class MainModel {
 
+    private String name;
+    private String course;
+    private String email;
+    private String turl;
+    private String description;
+    private boolean isFul;
 
-    MainModel(){
+    public MainModel() {}
 
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public MainModel(String name, String course, String email, String turl, String description) {
+    public MainModel(String name, String course, String email, String turl, String description, boolean isFul) {
         this.name = name;
         this.course = course;
         this.email = email;
         this.turl = turl;
         this.description = description;
+        this.isFul = isFul;
     }
-    // kontruktor uzywany jest aby stworzyc instancje klasy Mainmodel z wartosciami name,course
-    // email oraz turl ,które nie mają żadnych określonych z góry wartości, wartosci sa ustawianie pozniej
 
     public String getName() {
         return name;
@@ -60,6 +54,21 @@ public class MainModel implements Serializable {
         this.turl = turl;
     }
 
-    // metody geter oraz seter pozwalaja na dostep i modyfikacje zmiennych odpowiednio
-    // do ustawiania ich wartosci seter i geter do pobierania wartosci
+    public boolean isFul() {
+        return isFul;
+    }
+
+    public void setFul(boolean ful) {
+        isFul = ful;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+
 }
