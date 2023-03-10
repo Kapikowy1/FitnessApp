@@ -29,9 +29,10 @@ public class RecipeStorageActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_storage);
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         recyclerView=(RecyclerView) findViewById(R.id.favorites);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

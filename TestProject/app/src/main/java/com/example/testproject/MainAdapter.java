@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.imageview.ShapeableImageView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -51,7 +52,7 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel, MainAdapter.
         Glide.with(holder.img.getContext())
                 .load(model.getTurl())
                 .placeholder(com.firebase.ui.database.R.drawable.common_google_signin_btn_icon_dark)
-                .circleCrop()
+
                 .error(com.google.android.gms.base.R.drawable.common_google_signin_btn_icon_dark_normal)
                 .into(holder.img);
 
@@ -68,11 +69,10 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel, MainAdapter.
     class myViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
-        CircleImageView img;
+        ShapeableImageView img;
         TextView name, course, email;
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        String currentUserId = mAuth.getCurrentUser().getUid();
-        DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
+
+
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,9 +84,6 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel, MainAdapter.
             email = itemView.findViewById(R.id.emailtext);
             itemView.setOnClickListener(this);
 
-
-
-
         }
         @Override
         public void onClick(View v) {
@@ -95,12 +92,13 @@ public class MainAdapter extends FirebaseRecyclerAdapter<MainModel, MainAdapter.
 
             String name = model.getName();
             String imageUrl = model.getTurl();
-            String imageDesc = model.getDescription();
+            String description = model.getDescription();
+
             String course = model.getCourse();
 
 
             Intent intent = new Intent(itemView.getContext(), TeacherActivity.class);
-            intent.putExtra("desc", imageDesc);
+            intent.putExtra("description",description);
             intent.putExtra("name", name);
             intent.putExtra("imageUrl", imageUrl);
             intent.putExtra("course", course);

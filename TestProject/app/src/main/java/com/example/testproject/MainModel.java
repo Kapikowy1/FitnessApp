@@ -54,6 +54,14 @@ public class MainModel {
         this.turl = turl;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDesc(String desc) {
+        this.description = description;
+    }
+
     public boolean isFul() {
         return isFul;
     }
@@ -61,14 +69,4 @@ public class MainModel {
     public void setFul(boolean ful) {
         isFul = ful;
     }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-
 }

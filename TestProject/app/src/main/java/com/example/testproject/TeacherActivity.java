@@ -2,9 +2,11 @@ package com.example.testproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.text.HtmlCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -36,9 +38,10 @@ public class TeacherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher);
 
+
         String name = getIntent().getStringExtra("name");
         String imageUrl = getIntent().getStringExtra("imageUrl");
-        String teacherDescript =getIntent().getStringExtra("desc");
+        String teacherDescript =getIntent().getStringExtra("description");
 
 
 
@@ -52,8 +55,11 @@ public class TeacherActivity extends AppCompatActivity {
         Glide.with(this)
                 .load(imageUrl)
                 .into(teacherImage);
-        teacherDesc.setText(teacherDescript);
+        teacherDesc.setText(Html.fromHtml(teacherDescript, Html.FROM_HTML_MODE_LEGACY));
+
         teacherName.setText(name);
+
+
 
 
 
@@ -70,58 +76,9 @@ public class TeacherActivity extends AppCompatActivity {
         DatabaseReference favoriteTeachersRef = databaseReference.child("ulubieni_nauczyciele").child(currentUserId);
         String teacherId = favoriteTeachersRef.push().getKey();
 
-        Map<String, Object> teacherInfo = new HashMap<>();
-        teacherInfo.put("teacherId", teacherId);
-
-        DatabaseReference teacherref =favoriteTeachersRef.child(String.valueOf(teacherInfo));
 
 
-        teacherref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean isFav = Boolean.TRUE.equals(snapshot.getValue(Boolean.class));
-                if (isFav==true) { //jezeli isFav=true
-                    heartImg.setImageResource(R.drawable.heartful);
-                    Log.d("1","log");
-                    // already a favorite
 
-                } else { // w przeciwnym wypadku
-                    // mark as favorite
-                    heartImg.setImageResource(R.drawable.heartempty);
-                    Log.d("1","log222");
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        /*teacherref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean isFav = Boolean.TRUE.equals(snapshot.getValue(Boolean.class));
-                if (isFav==true) { //jezeli isFav=true
-                    heartImg.setImageResource(R.drawable.heartful);
-                    Log.d("1","log");
-                    // already a favorite
-
-                } else { // w przeciwnym wypadku
-                    // mark as favorite
-                    heartImg.setImageResource(R.drawable.heartempty);
-                    Log.d("1","log222");
-
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
         favoriteTeachersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -137,13 +94,13 @@ public class TeacherActivity extends AppCompatActivity {
                     if (name.equals(favname)) { //jezeli string name zadeklarowany w petli for jest rowny stringowi favname
                         if (isFav) { //jezeli isFav=true
                             heartImg.setImageResource(R.drawable.heartful);
-                            Log.d("1", "log");
+
                             // already a favorite
                             Toast.makeText(TeacherActivity.this, "Ten nauczyciel już jest w ulubionych.", Toast.LENGTH_SHORT).show();
                         } else { // w przeciwnym wypadku
                             // mark as favorite
                             heartImg.setImageResource(R.drawable.heartempty);
-                            Log.d("1", "log222");
+
                             teacherSnapshot.child("isfav").getRef().setValue(true);
                             Toast.makeText(TeacherActivity.this, "Nauczyciel dodany do ulubionych.", Toast.LENGTH_SHORT).show();
                         }
@@ -163,7 +120,7 @@ public class TeacherActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 String favname = getIntent().getStringExtra("name");
-                String favdesc = getIntent().getStringExtra("desc");
+                String favdesc = getIntent().getStringExtra("description");
                 String favimageUrl = getIntent().getStringExtra("imageUrl");
                 String favcourse = getIntent().getStringExtra("course");
 
@@ -180,19 +137,19 @@ public class TeacherActivity extends AppCompatActivity {
                             String name = teacherSnapshot.child("name").getValue(String.class);
                             //tworze boolean isFav o wartosci isfav z bazy danych
                             boolean isFav = Boolean.TRUE.equals(teacherSnapshot.child("isfav").getValue(Boolean.class));
-                            boolean clicked=false;
+
 
                             if (name.equals(favname)) { //jezeli string name zadeklarowany w petli for jest rowny stringowi favname
                                 if (isFav) { //jezeli isFav=true
                                     heartImg.setImageResource(R.drawable.heartful);
-                                    Log.d("1","log");
+
                                     // already a favorite
                                     Toast.makeText(TeacherActivity.this, "Ten nauczyciel już jest w ulubionych.", Toast.LENGTH_SHORT).show();
 
                                 } else { // w przeciwnym wypadku
                                     // mark as favorite
                                     heartImg.setImageResource(R.drawable.heartempty);
-                                    Log.d("1","log222");
+
                                     teacherSnapshot.child("isfav").getRef().setValue(true);
                                     Toast.makeText(TeacherActivity.this, "Nauczyciel dodany do ulubionych.", Toast.LENGTH_SHORT).show();
                                 }
@@ -203,7 +160,9 @@ public class TeacherActivity extends AppCompatActivity {
                         }
                         // not a favorite yet, add to favorites
                         favoriteTeachersRef.child(teacherId).child("name").setValue(favname);
-                        favoriteTeachersRef.child(teacherId).child("desc").setValue(favdesc);
+
+                        favoriteTeachersRef.child(teacherId).child("description").setValue(favdesc);
+
                         favoriteTeachersRef.child(teacherId).child("turl").setValue(favimageUrl);
                         favoriteTeachersRef.child(teacherId).child("course").setValue(favcourse);
                         favoriteTeachersRef.child(teacherId).child("isfav").setValue(true);

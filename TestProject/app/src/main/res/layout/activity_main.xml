@@ -5,64 +5,93 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
+    android:background="@drawable/gradient"
+
     >
+
+
+
+    <com.google.android.material.imageview.ShapeableImageView
+
+        android:id="@+id/mainRimage"
+        android:layout_width="380dp"
+        android:layout_height="255dp"
+        android:layout_marginTop="16dp"
+
+        android:adjustViewBounds="true"
+        android:foregroundGravity="center"
+        android:scaleType="fitCenter"
+        android:src="@drawable/cooking"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/roundimageview" />
+
+
+
 
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="1dp"
-        android:layout_marginTop="45dp"
-        android:layout_marginEnd="1dp"
-        android:layout_marginBottom="1dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="325dp"
+         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/rv"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+
+
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/mainRimage">
 
-    <Button
-        android:id="@+id/SortB"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:backgroundTint="@color/black"
-        android:text="Bcurs"
-        app:layout_constraintBottom_toTopOf="@+id/rv"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/SortB"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:backgroundTint="@color/toolbarcolor"
+            android:text="Śniadanie"
+            android:layout_margin="5dp"
+            android:textSize="10sp"
+            />
 
-    <Button
+        <Button
 
-        android:id="@+id/SortC"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
-        android:backgroundTint="@color/black"
-        android:text="Ccurs"
-        app:layout_constraintBottom_toTopOf="@+id/rv"
-        app:layout_constraintEnd_toStartOf="@+id/SortD"
-        app:layout_constraintStart_toEndOf="@+id/SortB" />
+            android:id="@+id/SortC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/toolbarcolor"
+            android:layout_margin="5dp"
+            android:textSize="10sp"
+            android:text="Obiad" />
 
-    <Button
-        android:id="@+id/SortD"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="5dp"
-        android:backgroundTint="@color/black"
-        android:text="Dcurs"
-        app:layout_constraintBottom_toTopOf="@+id/rv"
-        app:layout_constraintEnd_toStartOf="@+id/SortG" />
+        <Button
+            android:textSize="10sp"
 
-    <Button
-        android:id="@+id/SortG"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/black"
-        android:text="Gcurs"
-        app:layout_constraintBottom_toTopOf="@+id/rv"
-        app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_margin="5dp"
+            android:id="@+id/SortD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/toolbarcolor"
+            android:text="Kolacja" />
+
+        <Button
+            android:layout_margin="5dp"
+            android:id="@+id/SortG"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10sp"
+            android:backgroundTint="@color/toolbarcolor"
+            android:text="Deser" />
+
+
+    </LinearLayout>
+
 
 
 

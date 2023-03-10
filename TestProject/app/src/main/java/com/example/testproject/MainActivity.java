@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -75,6 +76,8 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         // adapter odpowiada za laczenie danych z interfejsem uzytkownika i przekazywanie ich do
         // RecyclerView, który wyświetla je na ekranie
 
+
+
         //SORTOWANIE
         sortButton1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +90,7 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
                     isSorted2=false;
                     isSorted3=false;
                     isSorted4=false;
-                    txtSortB();
+                    txtSortSniad();
                     isSorted1 = true;
                 }
             }
@@ -104,7 +107,7 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
                     isSorted1=false;
                     isSorted3=false;
                     isSorted4=false;
-                    txtSortC();
+                    txtSortObiad();
                     isSorted2 = true;
                 }
             }
@@ -121,7 +124,7 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
                     isSorted1=false;
                     isSorted2=false;
                     isSorted4=false;
-                    txtSortD();
+                    txtSortKolacja();
                     isSorted3 = true;
 
                 }
@@ -139,7 +142,7 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
                     isSorted1=false;
                     isSorted2=false;
                     isSorted3=false;
-                    txtSortG();
+                    txtSortDeser();
                     isSorted4 = true;
 
                 }
@@ -182,8 +185,8 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
     }
 
 
-    private void txtSortB() {
-        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Bcurs").endAt("Bcurs"+"\uf8ff");
+    private void txtSortSniad() {
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Śniadanie").endAt("Śniadanie"+"\uf8ff");
 
         FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
                 .setQuery(query, MainModel.class)
@@ -192,8 +195,8 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);
     }
-    private void txtSortC() {
-        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Ccurs").endAt("Ccurs"+"\uf8ff");
+    private void txtSortObiad() {
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Obiad").endAt("Obiad"+"\uf8ff");
 
         FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
                 .setQuery(query, MainModel.class)
@@ -202,8 +205,8 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);
     }
-    private void txtSortD() {
-        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Dcurs").endAt("Dcurs"+"\uf8ff");
+    private void txtSortKolacja() {
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Kolacja").endAt("Kolacja"+"\uf8ff");
 
         FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
                 .setQuery(query, MainModel.class)
@@ -212,8 +215,8 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);
     }
-    private void txtSortG() {
-        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Gcurs").endAt("Gcurs"+"\uf8ff");
+    private void txtSortDeser() {
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Deser").endAt("Deser"+"\uf8ff");
 
         FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
                 .setQuery(query, MainModel.class)
