@@ -1,10 +1,12 @@
 package com.example.testproject;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
@@ -39,6 +43,9 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
     private boolean isSorted3=false;
     private boolean isSorted4=false;
 
+    BottomNavigationView bottomNavigationView;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) { //Metoda oncreate jest uruchamiana na starcie activit
         // obiektBundle przekazywany jest jako argument metody onCreate nazwany savedInstanceState
@@ -52,11 +59,30 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         // activity . R jest klasą generowaną automatycznie przez android studio przechowuje odwolania do
         // zasobów natomiast layout odwoluje sie do folderu layout a activity main do pliku xml w tym folderze
 
+        bottomNavigationView=findViewById(R.id.bottom_navigation);
         recyclerView=(RecyclerView) findViewById(R.id.rv);//inicjuje obiekt klasy RecyclerView o nazwie recyclerView i przypisuje do niego element interfejsu o id rv
         sortButton1 = findViewById(R.id.SortB);
         sortButton2=findViewById(R.id.SortC);
         sortButton3=findViewById(R.id.SortD);
         sortButton4=findViewById(R.id.SortG);
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.diet_plan:
+                        Intent intent = new Intent(MainActivity.this, Dietplan_activity.class);
+                        MainActivity.this.startActivity(intent);
+
+                }
+                return false;
+            }
+        });
+
+
+
+
+
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//LayoutManager jest odpowiedzialny za
         // pozycjonowanie elementów w RecyclerView oraz zarządzanie ich rozmiarem i przewijaniem
@@ -240,6 +266,7 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         super.onStop();
         mainAdapter.stopListening();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) { // metoda jest wywoływana gdy jest tworzone menu opcji
         // dla danego activity

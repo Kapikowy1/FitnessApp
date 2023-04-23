@@ -2,17 +2,17 @@ package com.example.testproject;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.text.HtmlCompat;
+
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
+
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -22,8 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
-import java.util.Map;
+
 
 public class TeacherActivity extends AppCompatActivity {
     ImageView teacherImage,heartImg,ImgRecepieStore,ImgRecepiedelete;
@@ -94,15 +93,12 @@ public class TeacherActivity extends AppCompatActivity {
                     if (name.equals(favname)) { //jezeli string name zadeklarowany w petli for jest rowny stringowi favname
                         if (isFav) { //jezeli isFav=true
                             heartImg.setImageResource(R.drawable.heartful);
-
                             // already a favorite
-                            Toast.makeText(TeacherActivity.this, "Ten nauczyciel już jest w ulubionych.", Toast.LENGTH_SHORT).show();
+
                         } else { // w przeciwnym wypadku
                             // mark as favorite
                             heartImg.setImageResource(R.drawable.heartempty);
-
                             teacherSnapshot.child("isfav").getRef().setValue(true);
-                            Toast.makeText(TeacherActivity.this, "Nauczyciel dodany do ulubionych.", Toast.LENGTH_SHORT).show();
                         }
                         return;
                     }
@@ -144,14 +140,14 @@ public class TeacherActivity extends AppCompatActivity {
                                     heartImg.setImageResource(R.drawable.heartful);
 
                                     // already a favorite
-                                    Toast.makeText(TeacherActivity.this, "Ten nauczyciel już jest w ulubionych.", Toast.LENGTH_SHORT).show();
+
 
                                 } else { // w przeciwnym wypadku
                                     // mark as favorite
                                     heartImg.setImageResource(R.drawable.heartempty);
 
                                     teacherSnapshot.child("isfav").getRef().setValue(true);
-                                    Toast.makeText(TeacherActivity.this, "Nauczyciel dodany do ulubionych.", Toast.LENGTH_SHORT).show();
+
                                 }
                                 return;
                             }
@@ -166,7 +162,7 @@ public class TeacherActivity extends AppCompatActivity {
                         favoriteTeachersRef.child(teacherId).child("turl").setValue(favimageUrl);
                         favoriteTeachersRef.child(teacherId).child("course").setValue(favcourse);
                         favoriteTeachersRef.child(teacherId).child("isfav").setValue(true);
-                        Toast.makeText(TeacherActivity.this, "Nauczyciel dodany do ulubionych.", Toast.LENGTH_SHORT).show();
+
                     }
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
@@ -199,12 +195,12 @@ public class TeacherActivity extends AppCompatActivity {
                                 heartImg.setImageResource(R.drawable.heartempty);
                                 // found favorite teacher, remove from favorites
                                 teacherSnapshot.getRef().removeValue();
-                                Toast.makeText(TeacherActivity.this, "Nauczyciel usunięty z ulubionych.", Toast.LENGTH_SHORT).show();
+
                                 return;
                             }
                         }
                         // teacher not found or not a favorite
-                        Toast.makeText(TeacherActivity.this, "Nie można usunąć nauczyciela z ulubionych.", Toast.LENGTH_SHORT).show();
+
                     }
 
                     @Override

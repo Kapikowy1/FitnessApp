@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    android:layout_marginTop="100dp"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,64 +10,84 @@
     tools:context=".RegisterActivity">
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Please put the data"
+        android:textSize="70dp"
+        android:fontFamily="cursive"
+        android:textColor="@color/black"
+        android:gravity="center"/>
     <EditText
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
         android:id="@+id/editTextTextEmailAddressreg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="E-mail"
-        android:background="@color/purple_200"
+        android:background="@color/toolbarcolor"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="100dp"
+        android:textColorHint="@android:color/darker_gray"
+        android:textColor="@color/white"
 
         />
 
     <EditText
+        android:textColor="@color/white"
+        android:textColorHint="@android:color/darker_gray"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
         android:id="@+id/editTextTextPassword2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Password"
 
         android:ems="10"
-        android:background="@color/purple_200"
+        android:background="@color/toolbarcolor"
         android:inputType="textPassword"
-        android:layout_marginTop="150dp"
-        android:layout_marginLeft="100dp" />
+        />
 
     <EditText
+        android:textColor="@color/white"
+        android:textColorHint="@android:color/darker_gray"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
         android:id="@+id/editTextName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Name"
-        android:background="@color/purple_200"
+        android:background="@color/toolbarcolor"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="250dp"
-        android:layout_marginLeft="100dp"
+
 
         />
 
     <EditText
+        android:textColor="@color/white"
+        android:textColorHint="@android:color/darker_gray"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
         android:id="@+id/editTextnumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="number"
-        android:background="@color/purple_200"
+        android:hint="Number"
+        android:background="@color/toolbarcolor"
         android:inputType="textEmailAddress"
-        android:layout_marginTop="350dp"
-        android:layout_marginLeft="100dp"
+
 
         />
 
     <Button
+        android:layout_gravity="center"
+        android:layout_margin="10dp"
         android:id="@+id/registeruserbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Register user"
-        android:layout_marginTop="450dp"
-        android:layout_marginLeft="160dp"
+
         />
 
-</RelativeLayout>
+</LinearLayout>
