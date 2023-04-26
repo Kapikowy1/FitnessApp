@@ -1,5 +1,22 @@
 <resources>
     <string name="app_name">TestProject</string>
+    
+    <string-array name="genders">
+        <item>Gender</item>
+        <item>M</item>
+        <item>K</item>
+    </string-array>
+
+    <string-array name="activityType">
+        <item>Activity Level</item>
+        <item>None</item>
+        <item>Low</item>
+        <item>Medium</item>
+        <item>High</item>
+        <item>Very high</item>
+    </string-array>
+
+
     <string name="Search">Search</string>
     <string name="title_activity_recipe_storage">RecipeStorageActivity</string>
     <!-- Strings used for fragments for navigation -->

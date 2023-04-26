@@ -19,12 +19,20 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Dietplan_activity extends AppCompatActivity {
 
+    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+    String currentUserId = currentUser.getUid();
 
+    DatabaseReference weightRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId);
     private RecyclerView mRecyclerView;
 
     ImageView addItemImg, deleteItemImg;
@@ -34,7 +42,7 @@ public class Dietplan_activity extends AppCompatActivity {
 
     private double sumCalories;
 
-
+    private double activitymultiplier,BMRcalc,gendercalc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +69,61 @@ public class Dietplan_activity extends AppCompatActivity {
         //ustawienie adaptera dla recyclerview
         mRecyclerView.setAdapter(mAdapter);
 
+        weightRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Pobierz dane i przetwórz je
+
+
+                String weightStr = dataSnapshot.child("weight").getValue(String.class); // pobranie wartości typu String
+                double weightValue = Double.parseDouble(weightStr);
+                String heightStr= dataSnapshot.child("height").getValue(String.class);
+                double heightValue = Double.parseDouble(heightStr);
+                String ageStr=dataSnapshot.child("age").getValue(String.class);
+                double ageValue = Double.parseDouble(ageStr);
+
+                String genderValue = dataSnapshot.child("gender").getValue(String.class);
+                String ActivityTypeValue=dataSnapshot.child("activityType").getValue(String.class);
+
+                if (ActivityTypeValue.equals("None")){
+                    activitymultiplier=1.2;
+                }
+                else if (ActivityTypeValue.equals("Low")){
+                    activitymultiplier=1.375;
+                }
+                else if (ActivityTypeValue.equals("Medium")){
+                    activitymultiplier=1.55;
+                }
+                else if (ActivityTypeValue.equals("High")){
+                    activitymultiplier=1.725;
+                }
+                else if (ActivityTypeValue.equals("Very high")){
+                    activitymultiplier=1.9;
+                }
+
+
+
+
+                if (genderValue.equals("M")){
+                    gendercalc=88.36;
+                    BMRcalc=((gendercalc+((13.4*weightValue)+(4.8*heightValue))-(5.7*ageValue))*activitymultiplier);
+                    Log.d("1", String.valueOf(BMRcalc));
+                }
+                else if (genderValue.equals("K")){
+                    gendercalc=447.6;
+                    BMRcalc=((gendercalc+((9.2*weightValue)+(3.1*heightValue))-(4.3*ageValue))*activitymultiplier);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Obsłuż błąd pobierania danych
+            }
+        });
+
+
+
         //przycisk odpowiedzialny za obliczanie wartości do progressbara i ustawianie progressbara
         calcButt.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,9 +140,10 @@ public class Dietplan_activity extends AppCompatActivity {
                     sumCalories += value;
                 }
 
-                progressCalories.setMax(2500);
+
+                progressCalories.setMax((int) BMRcalc);
                 progressCalories.setProgress((int) sumCalories);
-                int progressPercent = (int) (sumCalories / 2500 * 100);
+                int progressPercent = (int) (sumCalories / (int) BMRcalc * 100);
                 progressPercentTV.setText(progressPercent + "%");
                 Toast.makeText(Dietplan_activity.this, "Suma kalorii: " + sumCalories, Toast.LENGTH_SHORT).show();
             }

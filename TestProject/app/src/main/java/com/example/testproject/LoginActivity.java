@@ -20,9 +20,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginActivity extends AppCompatActivity {
 
-
-
-
     Button Btn,tv;
     EditText Email,Password;
     String email,password;
@@ -38,10 +35,10 @@ public class LoginActivity extends AppCompatActivity {
         tv =findViewById(R.id.switch1);
         mAuth=FirebaseAuth.getInstance();
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
 
-        myRef.setValue("Hello, World!");
+
+
+
 
         tv.setOnClickListener(new View.OnClickListener() {
             @Override

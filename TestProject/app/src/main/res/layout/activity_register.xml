@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:layout_marginTop="100dp"
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_marginTop="00dp"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -9,85 +9,166 @@
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
 
-
-    <TextView
-        android:layout_width="wrap_content"
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Please put the data"
-        android:textSize="70dp"
-        android:fontFamily="cursive"
-        android:textColor="@color/black"
-        android:gravity="center"/>
-    <EditText
-        android:layout_gravity="center"
-        android:layout_margin="15dp"
-        android:id="@+id/editTextTextEmailAddressreg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="E-mail"
-        android:background="@color/toolbarcolor"
-        android:inputType="textEmailAddress"
-        android:textColorHint="@android:color/darker_gray"
-        android:textColor="@color/white"
-
-        />
-
-    <EditText
-        android:textColor="@color/white"
-        android:textColorHint="@android:color/darker_gray"
-        android:layout_gravity="center"
-        android:layout_margin="15dp"
-        android:id="@+id/editTextTextPassword2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:hint="Password"
-
-        android:ems="10"
-        android:background="@color/toolbarcolor"
-        android:inputType="textPassword"
-        />
-
-    <EditText
-        android:textColor="@color/white"
-        android:textColorHint="@android:color/darker_gray"
-        android:layout_gravity="center"
-        android:layout_margin="15dp"
-        android:id="@+id/editTextName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Name"
-        android:background="@color/toolbarcolor"
-        android:inputType="textEmailAddress"
+        android:fillViewport="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        >
 
 
-        />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="cursive"
+                android:gravity="center"
+                android:text="Please put the data"
+                android:textColor="@color/black"
+                android:textSize="70dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:textColor="@color/white"
-        android:textColorHint="@android:color/darker_gray"
-        android:layout_gravity="center"
-        android:layout_margin="15dp"
-        android:id="@+id/editTextnumber"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Number"
-        android:background="@color/toolbarcolor"
-        android:inputType="textEmailAddress"
+            <EditText
+                android:id="@+id/editTextTextEmailAddressreg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:background="@color/lightGrey"
+                android:ems="10"
+                android:hint="Email"
+
+                android:inputType="textEmailAddress"
+                android:textColor="@color/white"
+                android:textColorHint="@color/black" />
+
+            <EditText
+                android:id="@+id/editTextTextPassword2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:background="@color/lightGrey"
+                android:ems="10"
+                android:hint="Password"
+
+                android:inputType="textPassword"
+                android:textColor="@color/white"
+                android:textColorHint="@color/black" />
+
+            <EditText
+                android:id="@+id/editTextName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:background="@color/lightGrey"
+                android:ems="10"
+                android:hint="Name"
+                android:textColor="@color/white"
+                android:textColorHint="@color/black"
+
+                />
+
+            <EditText
+                android:id="@+id/editTextHeight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:background="@color/lightGrey"
+                android:ems="10"
+                android:hint="Height"
+                android:inputType="number"
+                android:maxLength="5"
+                android:textColor="@color/white"
+                android:textColorHint="@color/black"
 
 
-        />
+                />
 
-    <Button
-        android:layout_gravity="center"
-        android:layout_margin="10dp"
-        android:id="@+id/registeruserbtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Register user"
+            <EditText
+                android:id="@+id/editTextAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-        />
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:background="@color/lightGrey"
+                android:ems="10"
+                android:hint="Age"
+                android:inputType="number"
+                android:maxLength="5"
+                android:textColor="@color/white"
+                android:textColorHint="@color/black" />
 
-</LinearLayout>
+            <EditText
+                android:id="@+id/weight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:background="@color/lightGrey"
+                android:ems="10"
+                android:hint="Weight"
+                android:inputType="number"
+                android:maxLength="5"
+                android:textColor="@color/white"
+                android:textColorHint="@color/black"
+
+                />
+
+            <Spinner
+                android:id="@+id/spinner_gender"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:background="@color/lightGrey"
+                android:textColor="@color/white"
+                android:textColorHint="@android:color/darker_gray" />
+
+            <Spinner
+                android:id="@+id/spinner_sport"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="15dp"
+                android:background="@color/lightGrey" />
+
+            <Button
+                android:id="@+id/registeruserbtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:text="Register user"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
