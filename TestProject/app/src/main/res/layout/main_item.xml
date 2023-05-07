@@ -41,36 +41,23 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/img1"
-                android:text="teachername"
+                android:text="recipename"
                 android:textColor="@color/black"
                 android:textSize="19sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/coursetext"
+                android:id="@+id/recipetypetext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/nametxt"
 
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@+id/img1"
-                android:text="coursename"
+                android:text="recipetype"
                 android:textColor="@color/black"
                 android:textSize="19sp" />
 
-
-
-            <TextView
-                android:id="@+id/emailtext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/coursetext"
-
-                android:layout_marginLeft="10dp"
-                android:layout_toRightOf="@+id/img1"
-                android:text="emailid"
-                android:textColor="@color/black"
-                android:textSize="19sp" />
 
 
         </RelativeLayout>

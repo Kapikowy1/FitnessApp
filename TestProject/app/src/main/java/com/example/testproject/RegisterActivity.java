@@ -26,6 +26,10 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity  {
 
+
+
+
+
     EditText name,email,password,height,age,weight;
     Spinner activityType,gender;
 
@@ -33,8 +37,6 @@ public class RegisterActivity extends AppCompatActivity  {
     Button push;
     DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +51,6 @@ public class RegisterActivity extends AppCompatActivity  {
         gender=findViewById(R.id.spinner_gender);
         activityType=findViewById(R.id.spinner_sport);
         push=findViewById(R.id.registeruserbtn);
-
 
         ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this, R.array.genders, android.R.layout.simple_spinner_item);
         adapterGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -73,8 +74,6 @@ public class RegisterActivity extends AppCompatActivity  {
                 userHeight=height.getText().toString().trim();
                 userAge=age.getText().toString().trim();
                 userWeight=weight.getText().toString().trim();
-
-
 
                 userGender=gender.getSelectedItem().toString();
                 userActivityType=activityType.getSelectedItem().toString();
@@ -103,7 +102,6 @@ public class RegisterActivity extends AppCompatActivity  {
                 else {
                     authenticationCheck();
                 }
-
             }
         });
     }

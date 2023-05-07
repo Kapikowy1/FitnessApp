@@ -35,16 +35,12 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
 
     RecyclerView recyclerView;
     MainAdapter mainAdapter;
-    Button sortButton1,sortButton2,sortButton3,sortButton4;
-
-
+    Button sortButton1,sortButton2,sortButton3;
     private boolean isSorted1=false;
     private boolean isSorted2=false;
     private boolean isSorted3=false;
-    private boolean isSorted4=false;
 
     BottomNavigationView bottomNavigationView;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) { //Metoda oncreate jest uruchamiana na starcie activit
@@ -64,7 +60,7 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         sortButton1 = findViewById(R.id.SortB);
         sortButton2=findViewById(R.id.SortC);
         sortButton3=findViewById(R.id.SortD);
-        sortButton4=findViewById(R.id.SortG);
+
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
@@ -73,16 +69,13 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
                     case R.id.diet_plan:
                         Intent intent = new Intent(MainActivity.this, Dietplan_activity.class);
                         MainActivity.this.startActivity(intent);
-
+                    case R.id.calorieCalc:
+                        Intent intent1 =new Intent(MainActivity.this,Quiz_activity_Diet.class);
+                        MainActivity.this.startActivity(intent1);
                 }
                 return false;
             }
         });
-
-
-
-
-
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));//LayoutManager jest odpowiedzialny za
         // pozycjonowanie elementów w RecyclerView oraz zarządzanie ich rozmiarem i przewijaniem
@@ -115,7 +108,6 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
                     setButtonColors(true, sortButton1);
                     isSorted2=false;
                     isSorted3=false;
-                    isSorted4=false;
                     txtSortSniad();
                     isSorted1 = true;
                 }
@@ -132,7 +124,6 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
                     setButtonColors(true, sortButton2);
                     isSorted1=false;
                     isSorted3=false;
-                    isSorted4=false;
                     txtSortObiad();
                     isSorted2 = true;
                 }
@@ -149,38 +140,20 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
                     setButtonColors(true, sortButton3);
                     isSorted1=false;
                     isSorted2=false;
-                    isSorted4=false;
                     txtSortKolacja();
                     isSorted3 = true;
 
                 }
             }
         });
-        sortButton4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isSorted4) {
-                    setButtonColors(false, sortButton4);
-                    unsortData();
-                    isSorted4 = false;
-                } else {
-                    setButtonColors(true, sortButton4);
-                    isSorted1=false;
-                    isSorted2=false;
-                    isSorted3=false;
-                    txtSortDeser();
-                    isSorted4 = true;
 
-                }
-            }
-        });
     }
 
     private void setButtonColors(boolean isSorted, Button button) {
         sortButton1.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
         sortButton2.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
         sortButton3.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
-        sortButton4.setBackgroundColor(ContextCompat.getColor(getApplicationContext(), R.color.black));
+
         if (!isSorted) {
             unsortData();
         } else {
@@ -209,10 +182,8 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);
     }
-
-
     private void txtSortSniad() {
-        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Śniadanie").endAt("Śniadanie"+"\uf8ff");
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("recipeType").startAt("Śniadanie").endAt("Śniadanie"+"\uf8ff");
 
         FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
                 .setQuery(query, MainModel.class)
@@ -222,7 +193,7 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         recyclerView.setAdapter(mainAdapter);
     }
     private void txtSortObiad() {
-        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Obiad").endAt("Obiad"+"\uf8ff");
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("recipeType").startAt("Obiad").endAt("Obiad"+"\uf8ff");
 
         FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
                 .setQuery(query, MainModel.class)
@@ -232,7 +203,7 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         recyclerView.setAdapter(mainAdapter);
     }
     private void txtSortKolacja() {
-        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Kolacja").endAt("Kolacja"+"\uf8ff");
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("recipeType").startAt("Kolacja").endAt("Kolacja"+"\uf8ff");
 
         FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
                 .setQuery(query, MainModel.class)
@@ -241,20 +212,9 @@ public class MainActivity extends AppCompatActivity { //klasa MainActivityJava r
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);
     }
-    private void txtSortDeser() {
-        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("course").startAt("Deser").endAt("Deser"+"\uf8ff");
 
-        FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
-                .setQuery(query, MainModel.class)
-                .build();
-        mainAdapter = new MainAdapter(options);
-        mainAdapter.startListening();
-        recyclerView.setAdapter(mainAdapter);
-    }
     //SORTOWANIE
 
-
-    //WYSZUKIWANIE WYNIKOW
     @Override //notacja @Override jest używana po to aby oznaczyć metodę, która jest nadpisaniem klasy nadrzędnej
     // ma na celu kontynuacje implementacji z klasy nadrzędnej
     protected void onStart() {

@@ -25,20 +25,16 @@ public class RecipeStorageActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     MainAdapter mainAdapter;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_storage);
-
         String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         recyclerView=(RecyclerView) findViewById(R.id.favorites);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         FirebaseRecyclerOptions<MainModel> options=
                 new FirebaseRecyclerOptions.Builder<MainModel>()
-                        .setQuery(FirebaseDatabase.getInstance().getReference().child("ulubieni_nauczyciele").child(currentUserId),MainModel.class)
+                        .setQuery(FirebaseDatabase.getInstance().getReference().child("ulubione_przepisy").child(currentUserId),MainModel.class)
                         .build();
         mainAdapter=new MainAdapter(options);
         recyclerView.setAdapter(mainAdapter);

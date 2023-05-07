@@ -31,7 +31,6 @@ public class Dietplan_activity extends AppCompatActivity {
 
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     String currentUserId = currentUser.getUid();
-
     DatabaseReference weightRef = FirebaseDatabase.getInstance().getReference().child("users").child(currentUserId);
     private RecyclerView mRecyclerView;
 

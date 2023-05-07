@@ -24,7 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 
 
-public class TeacherActivity extends AppCompatActivity {
+public class RecipeActivity extends AppCompatActivity {
     ImageView teacherImage,heartImg,ImgRecepieStore,ImgRecepiedelete;
     TextView teacherName,teacherDesc;
 
@@ -66,19 +66,19 @@ public class TeacherActivity extends AppCompatActivity {
         ImgRecepieStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(TeacherActivity.this,RecipeStorageActivity.class);
+                Intent intent=new Intent(RecipeActivity.this,RecipeStorageActivity.class);
                 startActivity(intent);
             }
         });
 
         String currentUserId = mAuth.getCurrentUser().getUid();
-        DatabaseReference favoriteTeachersRef = databaseReference.child("ulubieni_nauczyciele").child(currentUserId);
-        String teacherId = favoriteTeachersRef.push().getKey();
+        DatabaseReference favoriteReciperef = databaseReference.child("ulubione_przepisy").child(currentUserId);
+        String teacherId = favoriteReciperef.push().getKey();
 
 
 
 
-        favoriteTeachersRef.addValueEventListener(new ValueEventListener() {
+        favoriteReciperef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String favname = getIntent().getStringExtra("name");
@@ -122,7 +122,7 @@ public class TeacherActivity extends AppCompatActivity {
 
 // Pobieranie listy nauczycieli z gałęzi ulubionych nauczycieli
 
-                favoriteTeachersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                favoriteReciperef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
 
@@ -155,13 +155,13 @@ public class TeacherActivity extends AppCompatActivity {
 
                         }
                         // not a favorite yet, add to favorites
-                        favoriteTeachersRef.child(teacherId).child("name").setValue(favname);
+                        favoriteReciperef.child(teacherId).child("name").setValue(favname);
 
-                        favoriteTeachersRef.child(teacherId).child("description").setValue(favdesc);
+                        favoriteReciperef.child(teacherId).child("description").setValue(favdesc);
 
-                        favoriteTeachersRef.child(teacherId).child("turl").setValue(favimageUrl);
-                        favoriteTeachersRef.child(teacherId).child("course").setValue(favcourse);
-                        favoriteTeachersRef.child(teacherId).child("isfav").setValue(true);
+                        favoriteReciperef.child(teacherId).child("turl").setValue(favimageUrl);
+                        favoriteReciperef.child(teacherId).child("course").setValue(favcourse);
+                        favoriteReciperef.child(teacherId).child("isfav").setValue(true);
 
                     }
                     @Override
@@ -183,7 +183,7 @@ public class TeacherActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String currentUserId = mAuth.getCurrentUser().getUid();
 
-                DatabaseReference favoriteTeachersRef = databaseReference.child("ulubieni_nauczyciele").child(currentUserId);
+                DatabaseReference favoriteTeachersRef = databaseReference.child("ulubione_przepisy").child(currentUserId);
                 favoriteTeachersRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     String favname = getIntent().getStringExtra("name");
                     @Override

@@ -5,23 +5,20 @@ import java.io.Serializable;
 public class MainModel {
 
     private String name;
-    private String course;
-    private String email;
+    private String recipeType;
     private String turl;
     private String description;
-    private boolean isFul;
+
 
     public MainModel() {}
 
-    public MainModel(String name, String course, String email, String turl, String description, boolean isFul) {
+    public MainModel(String name, String recipeType, String turl, String description) {
         this.name = name;
-        this.course = course;
-        this.email = email;
+        this.recipeType = recipeType;
         this.turl = turl;
         this.description = description;
-        this.isFul = isFul;
-    }
 
+    }
     public String getName() {
         return name;
     }
@@ -30,20 +27,12 @@ public class MainModel {
         this.name = name;
     }
 
-    public String getCourse() {
-        return course;
+    public String getRecipeType() {
+        return recipeType;
     }
 
-    public void setCourse(String course) {
-        this.course = course;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRecipeType(String recipeType) {
+        this.recipeType = recipeType;
     }
 
     public String getTurl() {
@@ -62,11 +51,4 @@ public class MainModel {
         this.description = description;
     }
 
-    public boolean isFul() {
-        return isFul;
-    }
-
-    public void setFul(boolean ful) {
-        isFul = ful;
-    }
 }
