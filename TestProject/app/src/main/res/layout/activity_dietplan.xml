@@ -4,52 +4,99 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/silver_gradient"
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-
+        android:layout_height="180dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/add_item_img"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-
-        android:layout_marginEnd="30dp"
-        app:layout_constraintEnd_toStartOf="@+id/delete_item_img"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view"
-        app:srcCompat="@drawable/add_item_plus" />
-
-    <ImageView
-        android:id="@+id/delete_item_img"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-
-        android:layout_marginStart="60dp"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_view"
-        app:srcCompat="@drawable/delete_item_minus" />
+        app:layout_constraintTop_toBottomOf="@+id/recycler_view">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="2"
+            android:fontFamily="@font/aladin"
+            android:gravity="center"
+            android:text="DODAJ  POTRAWE"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="2.3"
+            android:fontFamily="@font/aladin"
+            android:gravity="center"
+            android:text="USUŃ  POTRAWE"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+        <ImageView
+            android:id="@+id/add_item_img"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="2"
+            android:src="@drawable/add_item_plus" />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/delete_item_img"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="2.2"
+            android:src="@drawable/delete_item_minus" />
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
-
-        android:indeterminateOnly="false"
-        tools:progress="60"
-        android:progressDrawable="@drawable/progress_circle"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:indeterminateOnly="false"
+        android:progressDrawable="@drawable/progress_circle"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_diet"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_item_img" />
+        tools:progress="60" />
 
     <TextView
+        android:textColor="@color/white"
         android:id="@+id/progress_TV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -60,13 +107,42 @@
         app:layout_constraintStart_toStartOf="@+id/progressBar"
         app:layout_constraintTop_toTopOf="@+id/progressBar" />
 
-    <Button
-        android:id="@+id/calcButton"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Calculate"
+        android:layout_margin="10dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent">
 
+        <Button
+            android:id="@+id/calcButton"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="2"
+            android:text="Oblicz kalorie" />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="0.05"/>
+
+        <Button
+            android:id="@+id/save_dietplan"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="2"
+            android:text="Zapisz Plan" />
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation_diet"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/bottom_nav_menu_diet" />
 </androidx.constraintlayout.widget.ConstraintLayout>

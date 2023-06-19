@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="circular_rectangle">
+        <item name="cornerSize">15%</item>
+        <item name="color">@color/black</item>
+    </style>
+    <style name="circular_rectangle2">
+        <item name="cornerSize">15%</item>
+    </style>
+
+</resources>

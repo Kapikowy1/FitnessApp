@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".QuizFragment"
+    android:background="@drawable/gradient">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".Quiz_activity_Diet"
+
+        android:orientation="vertical"
+        >
+
+        <TextView
+
+            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:id="@+id/questionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Question"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            />
+
+        <Button
+            android:textSize="10sp"
+            android:text="A"
+            android:id="@+id/aButton"
+            android:layout_width="300dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            />
+
+        <Button
+            android:text="B"
+            android:textSize="10sp"
+            android:id="@+id/bButton"
+            android:layout_width="300dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            />
+        <Button
+            android:textSize="10sp"
+            android:text="C"
+            android:id="@+id/cButton"
+            android:layout_width="300dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            />
+
+        <Button
+            android:text="D"
+            android:textSize="10sp"
+            android:id="@+id/dButton"
+            android:layout_width="300dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            />
+        <Button
+            android:text="Submit"
+            android:textSize="30sp"
+            android:id="@+id/submitButtonQuiz"
+            android:layout_width="350dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            />
+        <ProgressBar
+            android:layout_gravity="center"
+            android:id="@+id/progressBarQuiz"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressDrawable="@drawable/custom_progress_bar"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            />
+    </LinearLayout>
+
+</FrameLayout>

@@ -6,12 +6,12 @@
         android:title="Home"
         android:icon="@drawable/ic_baseline_home_24"
         app:showAsAction="always"/>
-    <item android:id="@+id/calorieCalc"
-        android:title="calc"
-        android:icon="@drawable/calculator_menu_item"
+    <item android:id="@+id/go_to_Quiz"
+        android:title="Diet Quiz"
+        android:icon="@drawable/quiz_menu_item"
         app:showAsAction="always"/>
-    <item android:id="@+id/diet_plan"
-        android:title="plan"
+    <item android:id="@+id/plan_and_calc"
+        android:title="MakePlan &amp; calc"
         android:icon="@drawable/diet_plan_menuitem"
         app:showAsAction="always"/>
 

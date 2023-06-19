@@ -5,8 +5,11 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
 
-    android:padding="25dp"
-    android:textSize="16sp"
+    android:paddingStart="30dp"
+    android:paddingEnd="30dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:textAppearance="?android:attr/textAppearanceListItemSmall"
     android:textStyle="bold"
-    android:textColor="@color/black"
-    android:gravity="left" />
+    android:layout_gravity="center"
+     />

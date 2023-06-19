@@ -3,7 +3,10 @@ package com.example.testproject;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,11 +38,13 @@ public class LoginActivity extends AppCompatActivity {
         tv =findViewById(R.id.switch1);
         mAuth=FirebaseAuth.getInstance();
 
-
-
-
-
-
+        if (isInternetConnected()) {
+            // Wykonaj operacje, gdy jest dostępne połączenie internetowe
+            // ...
+        } else {
+            // Obsłuż przypadek braku połączenia internetowego
+            Toast.makeText(this, "Brak połączenia internetowego", Toast.LENGTH_SHORT).show();
+        }
         tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,14 +72,18 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
+    private boolean isInternetConnected() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
+    }
     private void authenticationUser(String email, String password) {
         mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     Toast.makeText(LoginActivity.this,"Login Succesful",Toast.LENGTH_SHORT).show();
-                    Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                    Intent intent=new Intent(getApplicationContext(),ActivityHome.class);
                     startActivity(intent);
                 }
                 else{

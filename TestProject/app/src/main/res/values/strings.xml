@@ -16,7 +16,31 @@
         <item>Very high</item>
     </string-array>
 
+    <string-array name="exerciseType">
+        <item>Wybierz partię</item>
+        <item>Barki</item>
+        <item>Klatka</item>
+        <item>Brzuch</item>
+        <item>Nogi</item>
+        <item>Biceps</item>
+        <item>Triceps</item>
+    </string-array>
 
+    <string-array name="recipeType">
+        <item>Wybierz rodzaj przepisu</item>
+        <item>Śniadanie</item>
+        <item>Obiad</item>
+        <item>Kolacja</item>
+        <item>Deser</item>
+    </string-array>
+
+    <string-array name="frequency_options">
+        <item>Codziennie</item>
+        <item>Raz w tygodniu</item>
+        <item>Raz w miesiącu</item>
+    </string-array>
+
+    <string name="frequency_prompt">Wybierz cykliczność alarmu</string>
     <string name="Search">Search</string>
     <string name="title_activity_recipe_storage">RecipeStorageActivity</string>
     <!-- Strings used for fragments for navigation -->
@@ -29,4 +53,6 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 </resources>

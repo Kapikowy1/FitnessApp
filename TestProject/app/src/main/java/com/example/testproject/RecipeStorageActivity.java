@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class RecipeStorageActivity extends AppCompatActivity {
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     MainAdapter mainAdapter;
 
     @Override

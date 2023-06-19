@@ -22,26 +22,24 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.ViewHolder> {
+public class SpinnerAdapter extends RecyclerView.Adapter<SpinnerAdapter.ViewHolder> {
     private DatabaseReference mDatabase;
     private List<String> mSpinnerData;
-    int liczbaelementowRV=4;
-
-    public RecyclerViewAdapter(DatabaseReference databaseReference) {
+    int liczbaelementowRV=3;
+    public SpinnerAdapter(DatabaseReference databaseReference) {
         mDatabase = databaseReference;
         mSpinnerData = new ArrayList<>();
-
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 mSpinnerData.clear();
-
+                mSpinnerData.add("Wybierz Potrawe");
                 for (DataSnapshot recipeSnapshot : dataSnapshot.child("teachers").getChildren()) {
                     String recipeName = recipeSnapshot.child("name").getValue(String.class);
                     mSpinnerData.add(recipeName);
                 }
+
                 notifyDataSetChanged();
             }
             @Override
@@ -49,7 +47,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 Log.e("RecyclerViewAdapter", "Error while getting data from Firebase", databaseError.toException());
             }
         });
-
         //ustawiam listę names w spinnerze
     }
 
@@ -74,13 +71,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     public void addItem() {
         liczbaelementowRV++;
-        notifyDataSetChanged();
+        notifyItemInserted(mSpinnerData.size());
     }
     //dodaję item i aktualizuje widok
 
     public void delItem() {
         liczbaelementowRV--;
-        notifyDataSetChanged();
+        notifyItemRemoved(mSpinnerData.size());
     }
     //usuwam item i aktualizuje widok
     class ViewHolder extends RecyclerView.ViewHolder implements AdapterView.OnItemSelectedListener {
@@ -91,12 +88,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
         //inicjuje zmienne dla obiektów w pojedyńczym itemie
         ViewHolder(View itemView) {
             super(itemView);
-
             mSpinner = itemView.findViewById(R.id.spinner);
             textViewCalories = itemView.findViewById(R.id.koncowe_kcal);
             multiplerEditText = itemView.findViewById(R.id.mnoznik_kcal);
             // inicjuje obiekty dla pojedyńczego itemu
-
             multiplerEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -125,7 +120,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                     .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            setCalories();
+                            if(selectedRecipeName.equals("Wybierz Potrawe")){
+                                textViewCalories.setText("1");
+                            }else {
+                                setCalories();
+                            }
+
                         }
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
@@ -143,15 +143,11 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
-
                                 for (DataSnapshot recipeSnapshot : snapshot.getChildren()) {
-
                                     double calories = recipeSnapshot.child("calories").getValue(Integer.class);
                                     String multiplierString = multiplerEditText.getText().toString();
                                     double mnoznikkalorii;
                                     //ustawiam zmienne potrzebne do obliczania koncowychkalorii
-
-
                                     try {
                                         mnoznikkalorii = Double.parseDouble(multiplierString);
                                     } catch (NumberFormatException e) {
@@ -168,8 +164,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
                             }
                         });
-            }
-
+                }
         }
         void bind(List<String> spinnerData) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(itemView.getContext(),

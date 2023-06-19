@@ -1,14 +1,10 @@
 package com.example.testproject;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
-import android.util.Log;
-import android.view.View;
 
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,60 +12,50 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 
+public class DetailsRecyclerItemActivity extends AppCompatActivity {
+    private ImageView recipeImage;
+    private TextView recipeName,recipeDesc;
 
-public class RecipeActivity extends AppCompatActivity {
-    ImageView teacherImage,heartImg,ImgRecepieStore,ImgRecepiedelete;
-    TextView teacherName,teacherDesc;
-
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_teacher);
-
+        setContentView(R.layout.activity_recipe);
 
         String name = getIntent().getStringExtra("name");
         String imageUrl = getIntent().getStringExtra("imageUrl");
-        String teacherDescript =getIntent().getStringExtra("description");
+        String recipeDescript =getIntent().getStringExtra("description");
 
 
-
-        heartImg=findViewById(R.id.saveRecipe);
-        ImgRecepieStore=findViewById(R.id.myRecipes);
-        ImgRecepiedelete=findViewById(R.id.deleteRecipe);
-        teacherDesc = findViewById(R.id.TeacherDescription);
-        teacherName = findViewById(R.id.TeacherName);
-        teacherImage=(ImageView) findViewById(R.id.TeacherImage);
+        recipeDesc = findViewById(R.id.recipe_description);
+        recipeName = findViewById(R.id.recipe_name);
+        recipeImage=(ImageView) findViewById(R.id.recipe_image);
 
         Glide.with(this)
                 .load(imageUrl)
-                .into(teacherImage);
-        teacherDesc.setText(Html.fromHtml(teacherDescript, Html.FROM_HTML_MODE_LEGACY));
-
-        teacherName.setText(name);
-
+                .into(recipeImage);
+        recipeDesc.setText(Html.fromHtml(recipeDescript, Html.FROM_HTML_MODE_LEGACY));
+        recipeName.setText(name);
 
 
 
 
 
-        ImgRecepieStore.setOnClickListener(new View.OnClickListener() {
+
+        /*ImgRecepieStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(RecipeActivity.this,RecipeStorageActivity.class);
                 startActivity(intent);
             }
-        });
+        });*/
 
         String currentUserId = mAuth.getCurrentUser().getUid();
         DatabaseReference favoriteReciperef = databaseReference.child("ulubione_przepisy").child(currentUserId);
@@ -78,7 +64,7 @@ public class RecipeActivity extends AppCompatActivity {
 
 
 
-        favoriteReciperef.addValueEventListener(new ValueEventListener() {
+       /* favoriteReciperef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String favname = getIntent().getStringExtra("name");
@@ -110,8 +96,8 @@ public class RecipeActivity extends AppCompatActivity {
 
             }
         });
-
-        heartImg.setOnClickListener(new View.OnClickListener() {
+*/
+       /* heartImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -213,6 +199,6 @@ public class RecipeActivity extends AppCompatActivity {
 
 
             }
-        });
+        });*/
     }
 }

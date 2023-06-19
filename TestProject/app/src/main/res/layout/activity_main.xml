@@ -39,16 +39,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="240dp"
-
+            android:layout_marginBottom="57dp"
             />
+
         <TextView
             android:id="@+id/recipemaintxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
+            android:fontFamily="@font/allura"
             android:text="Znajdź przepis dla siebie"
             android:textColor="@color/white"
-            android:textSize="25sp"
+            android:textSize="35sp"
             android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="@+id/mainRimage"
             app:layout_constraintEnd_toEndOf="@+id/mainRimage"
@@ -56,64 +57,34 @@
             app:layout_constraintTop_toTopOf="@+id/mainRimage" />
 
 
-
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/linearbuttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/mainRimage"
-            >
+            app:layout_constraintBottom_toTopOf="@+id/rv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mainRimage">
 
-            <Button
-                android:id="@+id/SortB"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:layout_margin="5dp"
-                android:layout_marginStart="20dp"
-                android:backgroundTint="@color/toolbarcolor"
-                android:text="Śniadanie"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Button
-
-
-                android:id="@+id/SortC"
+            <Spinner
+                android:id="@+id/chooseRecipeSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:backgroundTint="@color/toolbarcolor"
-                android:text="Obiad"
-                android:textSize="10sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/SortD"
-                app:layout_constraintStart_toEndOf="@+id/SortB"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/style_spinner"
+                android:gravity="center_horizontal"
+                android:textAlignment="center"
 
-            <Button
-                android:id="@+id/SortD"
-
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_marginEnd="20dp"
-                android:backgroundTint="@color/toolbarcolor"
-                android:text="Kolacja"
-                android:textSize="10sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
