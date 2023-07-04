@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/home"
-        android:title="Home"
+        android:title="home"
         android:icon="@drawable/ic_baseline_home_24"
         app:showAsAction="always"/>
 
-
-
-
-
-    <item android:id="@+id/training_plan"
-        android:title="Plan"
-        android:icon="@drawable/training_schedule"
+    <item android:id="@+id/ready_plans"
+        android:title="Ready Plans"
+        android:icon="@drawable/ready_plans_item"
         app:showAsAction="always"/>
 
+    <item android:id="@+id/my_training_plans_menuitem"
+        android:title="My Plans"
+        android:icon="@drawable/training_schedule"
+        app:showAsAction="always"/>
 </menu>

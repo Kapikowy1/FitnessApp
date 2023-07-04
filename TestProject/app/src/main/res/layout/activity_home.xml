@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/gradient2"
     android:visibility="visible"
-    tools:context=".MainActivity"
+    tools:context=".Dieta.RecipeSearch.MainActivity"
     >
 
     <ScrollView
@@ -79,28 +79,7 @@
             </androidx.cardview.widget.CardView>
 
 
-            <androidx.cardview.widget.CardView
-                app:cardBackgroundColor="@color/lightGrey"
-                android:layout_width="match_parent"
-                android:layout_height="240dp"
-                app:cardCornerRadius="20dp"
-                android:layout_gravity="center"
-                android:layout_margin="5dp">
-                <ImageView
-                    android:id="@+id/Habits_Img"
-                    android:layout_width="365dp"
-                    android:layout_height="240dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/plan" />
-                <Button
-                    android:id="@+id/habit_Btn"
-                    android:textColor="@color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Habit TRacker" />
-            </androidx.cardview.widget.CardView>
+
 
         </LinearLayout>
     </ScrollView>

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Dieta.Quiz.QuizFragment"
+    tools:context=".Dieta.Quiz.QuizActivity"
     android:background="@drawable/gradient">
 
     <!-- TODO: Update blank fragment layout -->
