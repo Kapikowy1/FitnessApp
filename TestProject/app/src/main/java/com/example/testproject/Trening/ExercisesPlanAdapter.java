@@ -30,11 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ExercisesPlanAdapter extends RecyclerView.Adapter<ExercisesPlanAdapter.ViewHolder> {
-    private DatabaseReference mDatabase;
-    private List<String> dataToDialog;
-    int liczbaelementowRV=1;
-
-
+    private final DatabaseReference mDatabase;
+    private final List<String> dataToDialog;
 
 
     public ExercisesPlanAdapter(DatabaseReference databaseReference) {
@@ -51,7 +48,6 @@ public class ExercisesPlanAdapter extends RecyclerView.Adapter<ExercisesPlanAdap
                     dataToDialog.add(exerciseName);
                 }
                 notifyDataSetChanged();
-                //tutaj tworze dane do dialogu ktory wyskakuje po kliknieciu spinnerTV
             }
 
             @Override
@@ -60,7 +56,6 @@ public class ExercisesPlanAdapter extends RecyclerView.Adapter<ExercisesPlanAdap
             }
         });
 
-        //ustawiam listę names w spinnerze
     }
 
     @NonNull
@@ -74,43 +69,35 @@ public class ExercisesPlanAdapter extends RecyclerView.Adapter<ExercisesPlanAdap
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.bind(dataToDialog);
-        // przesyłam listę names z bazy danych do spinnera
-    }
 
+    }
+    int liczbaelementowRV=1;
     @Override
     public int getItemCount() {
         return liczbaelementowRV;
-    } //ustawiam ilość spinnerów
+    }
 
     public void addItem() {
         liczbaelementowRV++;
         notifyItemInserted(dataToDialog.size());
+        Log.d("Czy się wywoluje?", String.valueOf(liczbaelementowRV));
     }
-    //dodaję item i aktualizuje widok
-
     public void delItem() {
         liczbaelementowRV--;
         notifyItemRemoved(dataToDialog.size());
+        Log.d("Czy się wywoluje?", String.valueOf(liczbaelementowRV));
     }
-    //usuwam item i aktualizuje widok
     class ViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView textViewPartia,spinnerTV;
-        public EditText powtorzeniaEditText,serieEditText;
+        private final TextView textViewPartia,spinnerTV;
+        private Dialog dialog;
 
-        Dialog dialog;
-
-        //inicjuje zmienne dla obiektów w pojedyńczym itemie
         ViewHolder(View itemView) {
             super(itemView);
 
             spinnerTV = itemView.findViewById(R.id.spinner_TV);
             textViewPartia = itemView.findViewById(R.id.partiaTV);
-            powtorzeniaEditText = itemView.findViewById(R.id.powtorzeniaET);
-            serieEditText= itemView.findViewById(R.id.serieET);
-
-
-            // inicjuje obiekty dla pojedyńczego itemu
+            EditText powtorzeniaEditText = itemView.findViewById(R.id.powtorzeniaET);
 
 
             spinnerTV.setOnClickListener(new View.OnClickListener() {
@@ -125,7 +112,6 @@ public class ExercisesPlanAdapter extends RecyclerView.Adapter<ExercisesPlanAdap
                     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     dialog.show();
 
-                    //ustawiam wyglad dialogu
                     EditText editText = dialog.findViewById(R.id.edit_text);
                     ListView listView = dialog.findViewById(R.id.list_view);
 
@@ -138,7 +124,7 @@ public class ExercisesPlanAdapter extends RecyclerView.Adapter<ExercisesPlanAdap
                         }
                         @Override
                         public void onTextChanged(CharSequence s, int start, int before, int count) {
-                            adapter.getFilter().filter(s); //sortowanie wynikow w dialogu
+                            adapter.getFilter().filter(s);
                         }
                         @Override
                         public void afterTextChanged(Editable s) {
@@ -146,14 +132,13 @@ public class ExercisesPlanAdapter extends RecyclerView.Adapter<ExercisesPlanAdap
                         }
                     });
 
-
                     listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                            String selectedExerciseName = adapter.getItem(position); // Użyj adaptera do pobrania wybranego elementu
-                            spinnerTV.setText(selectedExerciseName); // Ustaw tekst na spinnerTV
+                            String selectedExerciseName = adapter.getItem(position);
+                            spinnerTV.setText(selectedExerciseName);
                             dialog.dismiss();
-                            //tworze string o wartosci wybranej pozycji dialogu
+
 
                             mDatabase.child("exercises").orderByChild("name").equalTo(selectedExerciseName)
                                     .addValueEventListener(new ValueEventListener() {
@@ -162,63 +147,39 @@ public class ExercisesPlanAdapter extends RecyclerView.Adapter<ExercisesPlanAdap
 
                                             if (selectedExerciseName.equals("Wybierz cwiczenie")){
                                                 textViewPartia.setText("Type");
-                                                //ustawiam tv na type jezeli nie wybrano zadnego cwiczenia
                                             }else {
                                                 for (DataSnapshot exerciseSnapshot : snapshot.getChildren()) {
 
                                                     String exerGroup = exerciseSnapshot.child("recipeType").getValue(String.class);
                                                     textViewPartia.setText(exerGroup);
-                                                    //ustawiam textview na partie ktora jest przyporzadkowana do danego name
                                                 }
                                             }
-
                                         }
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError error) {
                                         }
                                     });
-
                             }
                     });
-
                 }
             });
-
 
             powtorzeniaEditText.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 }
-
                 @Override
                 public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
                 }
-
                 @Override
                 public void afterTextChanged(Editable editable) {
-
                 }
             });
-            //nieuzyty textwatcher na powtorzeniaet
-
-
-
-
         }
-
-
-
-
-
         void bind(List<String> spinnerData) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(itemView.getContext(),
                     android.R.layout.simple_spinner_dropdown_item, spinnerData);
-
-
         }
     }
-
-
 }
 

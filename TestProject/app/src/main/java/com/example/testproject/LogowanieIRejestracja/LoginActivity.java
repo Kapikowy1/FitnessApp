@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,27 +21,22 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
-
-    Button Btn,tv;
-    EditText Email,Password;
-    String email,password;
-    FirebaseAuth mAuth;
-
+    private EditText Email,Password;
+    private String email,password;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         Email=findViewById(R.id.u_email);
         Password=findViewById(R.id.u_password);
-        Btn =findViewById(R.id.loginBtn);
-        tv =findViewById(R.id.switch1);
+        Button btn = findViewById(R.id.loginBtn);
+        Button tv = findViewById(R.id.switch1);
         mAuth=FirebaseAuth.getInstance();
 
         if (isInternetConnected()) {
-            // Wykonaj operacje, gdy jest dostępne połączenie internetowe
-            // ...
+            Log.d("Internet state","connected");
         } else {
-            // Obsłuż przypadek braku połączenia internetowego
             Toast.makeText(this, "Brak połączenia internetowego", Toast.LENGTH_SHORT).show();
         }
         tv.setOnClickListener(new View.OnClickListener() {
@@ -50,14 +46,12 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        Btn.setOnClickListener(new View.OnClickListener() {
+        btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 email = Email.getText().toString().trim();
                 password = Password.getText().toString();
-
                 if(email.equals("")){
                     Email.setError("Username required");
                 }

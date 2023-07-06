@@ -11,6 +11,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,41 +34,28 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 public class MainActivity extends AppCompatActivity {
-    RecyclerView recyclerView;
-    MainAdapter mainAdapter;
-    Spinner recipeType;
+    private RecyclerView recyclerView;
+    private MainAdapter mainAdapter;
+    private Spinner recipeType;
 
+    private final SparseArray<Class<?>> menuIntentMap = new SparseArray<>();
 
-    BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
-        bottomNavigationView=findViewById(R.id.bottom_navigation);
         recyclerView=(RecyclerView) findViewById(R.id.rv);
         recipeType= findViewById(R.id.chooseRecipeSpinner);
 
+        setSpinnerAdapter();
+        setRecyclerView();
+        setupBottomNavigationView();
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.recipeType, R.layout.my_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        recipeType.setAdapter(adapter);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        FirebaseRecyclerOptions<MainModel> options=
-                new FirebaseRecyclerOptions.Builder<MainModel>()
-                        .setQuery(FirebaseDatabase.getInstance().getReference().child("teachers"),MainModel.class)
-                        .build();
-
-        mainAdapter=new MainAdapter(options);
-        recyclerView.setAdapter(mainAdapter);
-        // Sprawdzenie dostępności połączenia internetowego
         if (isInternetConnected()) {
-            // Wykonaj operacje, gdy jest dostępne połączenie internetowe
-            // ...
+            Log.d("Internet state","connected");
         } else {
-            // Obsłuż przypadek braku połączenia internetowego
             Toast.makeText(this, "Brak połączenia internetowego", Toast.LENGTH_SHORT).show();
         }
         recipeType.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -75,58 +64,16 @@ public class MainActivity extends AppCompatActivity {
 
                 String selectedRecipe = parent.getItemAtPosition(position).toString();
                 if (selectedRecipe.equals("Wybierz rodzaj przepisu")){
-                    Query query = FirebaseDatabase.getInstance().getReference().child("teachers");
-
-                    FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
-                            .setQuery(query, MainModel.class)
-                            .build();
-                    mainAdapter = new MainAdapter(options);
-                    mainAdapter.startListening();
-                    recyclerView.setAdapter(mainAdapter);
-                    //wyświetlam rv jezeli spinner ma tekst wybierz rodzaj przepisu
+                    resetRecyclerView();
                 }else{
-                    Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("recipeType").startAt(selectedRecipe).endAt(selectedRecipe+"\uf8ff");
-                    FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
-                            .setQuery(query, MainModel.class)
-                            .build();
-                    mainAdapter = new MainAdapter(options);
-                    mainAdapter.startListening();
-                    recyclerView.setAdapter(mainAdapter);
-                    //sortuje wyniki wzgledem rodzaju przepisu
+                    sortRecyclerview(selectedRecipe);
                 }
             }
-
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
-
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.plan_and_calc:
-                        Intent intent = new Intent(MainActivity.this, Dietplan_activity.class);
-                        MainActivity.this.startActivity(intent);
-                        break;
-                    case R.id.go_to_Quiz:
-                        Intent intentLearn =new Intent(MainActivity.this, LearnActivity.class);
-                        MainActivity.this.startActivity(intentLearn);
-                        break;
-                    case R.id.home:
-                        Intent intentHome= new Intent(MainActivity.this, ChooseModuleActivity.class);
-                        MainActivity.this.startActivity(intentHome);
-                        break;
-                }
-                return false;
-            }
-        });
-
-
-
-
-
     }
 
     private boolean isInternetConnected() {
@@ -134,8 +81,6 @@ public class MainActivity extends AppCompatActivity {
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();
     }
-
-
 
     private void  txtSearch(String str) {
         Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("name").startAt(str).endAt(str+"\uf8ff");
@@ -146,14 +91,11 @@ public class MainActivity extends AppCompatActivity {
         mainAdapter = new MainAdapter(options);
         mainAdapter.startListening();
         recyclerView.setAdapter(mainAdapter);
-        //metoda do wyszukiwania w menu
     }
 
 
-    //SORTOWANIE
 
-    @Override //notacja @Override jest używana po to aby oznaczyć metodę, która jest nadpisaniem klasy nadrzędnej
-    // ma na celu kontynuacje implementacji z klasy nadrzędnej
+    @Override
     protected void onStart() {
         super.onStart();
         mainAdapter.startListening();
@@ -169,7 +111,6 @@ public class MainActivity extends AppCompatActivity {
         MenuItem item =menu.findItem(R.id.search);
         SearchView searchView=(SearchView) item.getActionView();
         searchView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_CAP_WORDS);
-        //zaimplementowanie menu
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -184,5 +125,61 @@ public class MainActivity extends AppCompatActivity {
         });
         return super.onCreateOptionsMenu(menu);
     }
-    //WYSZUKIWANIE WYNIKOW
+    private void setSpinnerAdapter(){
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.recipeType, R.layout.my_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        recipeType.setAdapter(adapter);
+    }
+    private void setRecyclerView(){
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        FirebaseRecyclerOptions<MainModel> options=
+                new FirebaseRecyclerOptions.Builder<MainModel>()
+                        .setQuery(FirebaseDatabase.getInstance().getReference().child("teachers"),MainModel.class)
+                        .build();
+        mainAdapter=new MainAdapter(options);
+        recyclerView.setAdapter(mainAdapter);
+    }
+    private void resetRecyclerView(){
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers");
+        FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
+                .setQuery(query, MainModel.class)
+                .build();
+        mainAdapter = new MainAdapter(options);
+        mainAdapter.startListening();
+        recyclerView.setAdapter(mainAdapter);
+    }
+    private void sortRecyclerview(String selectedRecipe){
+        Query query = FirebaseDatabase.getInstance().getReference().child("teachers").orderByChild("recipeType").startAt(selectedRecipe).endAt(selectedRecipe+"\uf8ff");
+        FirebaseRecyclerOptions<MainModel> options = new FirebaseRecyclerOptions.Builder<MainModel>()
+                .setQuery(query, MainModel.class)
+                .build();
+        mainAdapter = new MainAdapter(options);
+        mainAdapter.startListening();
+        recyclerView.setAdapter(mainAdapter);
+    }
+    private void setupBottomNavigationView() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        initializeMenuIntentMap();
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int itemId = item.getItemId();
+                Class<?> intentClass = menuIntentMap.get(itemId);
+                if (intentClass != null) {
+                    Intent intent = new Intent(MainActivity.this, intentClass);
+                    startActivity(intent);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+    private void initializeMenuIntentMap() {
+        menuIntentMap.put(R.id.plan_and_calc, Dietplan_activity.class);
+        menuIntentMap.put(R.id.go_to_Quiz, LearnActivity.class);
+        menuIntentMap.put(R.id.home, ChooseModuleActivity.class);
+    }
+
+
+
 }

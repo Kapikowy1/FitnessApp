@@ -18,53 +18,40 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.HashMap;
+
 public class MyDietPlansActivity extends AppCompatActivity {
-    private BottomNavigationView navDiet;
 
     private RecyclerView dietplanRV;
-    AdapterDietPlans planadapter;
+    private AdapterDietPlans planadapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_diet_plans);
 
-        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         dietplanRV = findViewById(R.id.diet_plans_rv);
+        BottomNavigationView navigationBar = findViewById(R.id.bottom_navigation_diet);
+
+        setmRecycler();
+        navigationBar.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                navigateTo(item.getItemId());
+                return false;
+            }
+        });
+    }
+    private void setmRecycler(){
         dietplanRV.setLayoutManager(new LinearLayoutManager(MyDietPlansActivity.this));
-
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Query query = FirebaseDatabase.getInstance().getReference().child("dietplans").child(currentUserId).orderByKey();
-
         FirebaseRecyclerOptions<String> options =
                 new FirebaseRecyclerOptions.Builder<String>()
                         .setQuery(query, snapshot -> snapshot.getKey())
                         .build();
-
         planadapter = new AdapterDietPlans(options);
         dietplanRV.setAdapter(planadapter);
-
-        navDiet=findViewById(R.id.bottom_navigation_diet);
-
-        navDiet.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()){
-                    case R.id.plan_and_calc_dietmenu:
-                        Intent dietcalcintent=new Intent(MyDietPlansActivity.this, Dietplan_activity.class);
-                        MyDietPlansActivity.this.startActivity(dietcalcintent);
-                        break;
-                    case R.id.my_diets:
-                        Intent dietplansintent=new Intent(MyDietPlansActivity.this,MyDietPlansActivity.class);
-                        MyDietPlansActivity.this.startActivity(dietplansintent);
-                        break;
-                    case R.id.home:
-                        Intent intentHome= new Intent(MyDietPlansActivity.this, ChooseModuleActivity.class);
-                        MyDietPlansActivity.this.startActivity(intentHome);
-                        break;
-                }
-                return false;
-            }
-        });
     }
     @Override
     public void onStart() {
@@ -81,4 +68,17 @@ public class MyDietPlansActivity extends AppCompatActivity {
             planadapter.stopListening();
         }
     }
+    private void navigateTo(int itemId) {
+        HashMap<Integer,Class<?>> activitymap=new HashMap<>();
+        activitymap.put(R.id.plan_and_calc_dietmenu, Dietplan_activity.class);
+        activitymap.put(R.id.my_diets, MyDietPlansActivity.class);
+        activitymap.put(R.id.home,ChooseModuleActivity.class);
+
+        Class<?> destinationactivity= activitymap.get(itemId);
+        if(destinationactivity!=null){
+            Intent intent=new Intent(MyDietPlansActivity.this,destinationactivity);
+            startActivity(intent);
+        }
+    }
+
 }

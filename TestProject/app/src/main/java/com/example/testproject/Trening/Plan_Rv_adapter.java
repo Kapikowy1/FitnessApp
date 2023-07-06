@@ -16,21 +16,14 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 public class Plan_Rv_adapter extends FirebaseRecyclerAdapter<String, Plan_Rv_adapter.ViewHolder> {
 
-
-
     public Plan_Rv_adapter(@NonNull FirebaseRecyclerOptions<String> options) {
         super(options);
-
-
-
     }
-
     @Override
     protected void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull String planName) {
         holder.planName.setText(planName);
 
     }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,10 +34,6 @@ public class Plan_Rv_adapter extends FirebaseRecyclerAdapter<String, Plan_Rv_ada
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView planName;
         CardView cardView;
-
-
-        String choosePlansString;
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -53,14 +42,12 @@ public class Plan_Rv_adapter extends FirebaseRecyclerAdapter<String, Plan_Rv_ada
             cardView = itemView.findViewById(R.id.planCard);
             itemView.setOnClickListener(this);
         }
-
         @Override
         public void onClick(View v) {
             String planNameValue = planName.getText().toString();
-            Intent intent = new Intent(itemView.getContext(), CurrentPlanActivity.class);
-            intent.putExtra("planName", planNameValue);
-            itemView.getContext().startActivity(intent);
-
+            Intent currentPlan = new Intent(itemView.getContext(), CurrentPlanActivity.class);
+            currentPlan.putExtra("planName", planNameValue);
+            itemView.getContext().startActivity(currentPlan);
         }
     }
 }

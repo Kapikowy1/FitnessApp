@@ -1,7 +1,12 @@
 package com.example.testproject.Dieta.Quiz;
 
 public class Question {
-    private String questionText,answer,optionA,optionB,optionC,optionD;
+    private final String questionText;
+    private final String answer;
+    private final String optionA;
+    private final String optionB;
+    private final String optionC;
+    private final String optionD;
 
 
     public Question(String questionText, String answer,String optionA,String optionB,String optionC,String optionD) {
@@ -32,9 +37,7 @@ public class Question {
         return answer;
     }
 
-    public void setQuestionText(String questionText) {
-        this.questionText = questionText;
-    }
+
 
 
 }

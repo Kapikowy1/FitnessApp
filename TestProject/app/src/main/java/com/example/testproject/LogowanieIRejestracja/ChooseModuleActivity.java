@@ -13,15 +13,14 @@ import com.example.testproject.R;
 import com.example.testproject.Trening.TrainingMainActivity;
 
 public class ChooseModuleActivity extends AppCompatActivity {
-    private Button trainingBtn,dietBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        trainingBtn = findViewById(R.id.training_Btn);
-        dietBtn = findViewById(R.id.diet_Btn);
+        Button trainingBtn = findViewById(R.id.training_Btn);
+        Button dietBtn = findViewById(R.id.diet_Btn);
 
 
         trainingBtn.setOnClickListener(new View.OnClickListener() {

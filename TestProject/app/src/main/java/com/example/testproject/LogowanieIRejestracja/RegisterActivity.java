@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.example.testproject.LogowanieIRejestracja.LoginActivity;
+
 import com.example.testproject.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,17 +25,10 @@ import java.util.HashMap;
 
 
 public class RegisterActivity extends AppCompatActivity  {
-
-
-
-
-
-    EditText name,email,password,height,age,weight;
-    Spinner activityType,gender;
-
-    String userName,userEmail,userPassword,userHeight,userGender,userAge,userActivityType,userWeight;
-    Button push;
-    DatabaseReference databaseReference;
+    private EditText name,email,password,height,age,weight;
+    private Spinner activityType,gender;
+    private String userName,userEmail,userPassword,userHeight,userGender,userAge,userActivityType,userWeight;
+    private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,17 +43,10 @@ public class RegisterActivity extends AppCompatActivity  {
         age=findViewById(R.id.editTextAge);
         gender=findViewById(R.id.spinner_gender);
         activityType=findViewById(R.id.spinner_sport);
-        push=findViewById(R.id.registeruserbtn);
+        Button push = findViewById(R.id.registeruserbtn);
 
-        ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this, R.array.genders, android.R.layout.simple_spinner_item);
-        adapterGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        gender.setAdapter(adapterGender);
-
-
-        ArrayAdapter<CharSequence> adapterActivity = ArrayAdapter.createFromResource(this, R.array.activityType, android.R.layout.simple_spinner_item);
-        adapterActivity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        activityType.setAdapter(adapterActivity);
-
+        setUpGenderSpinner();
+        setUpActivityTypeSpinner();
 
         databaseReference= FirebaseDatabase.getInstance().getReference();
         mAuth=FirebaseAuth.getInstance();
@@ -68,42 +54,36 @@ public class RegisterActivity extends AppCompatActivity  {
         push.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userName=name.getText().toString().trim();
-                userEmail=email.getText().toString().trim();
-                userPassword=password.getText().toString().trim();
-                userHeight=height.getText().toString().trim();
-                userAge=age.getText().toString().trim();
-                userWeight=weight.getText().toString().trim();
+                userName = name.getText().toString().trim();
+                userEmail = email.getText().toString().trim();
+                userPassword = password.getText().toString().trim();
+                userHeight = height.getText().toString().trim();
+                userAge = age.getText().toString().trim();
+                userWeight = weight.getText().toString().trim();
+                userGender = gender.getSelectedItem().toString();
+                userActivityType = activityType.getSelectedItem().toString();
 
-                userGender=gender.getSelectedItem().toString();
-                userActivityType=activityType.getSelectedItem().toString();
+                HashMap<String, String> validationMap = new HashMap<>();
+                setUpValidationMap(validationMap);
 
-                if(userName.equals("")){
-                    name.setError("Fill username");
-                }
-                else if(userEmail.equals("")){
-                    email.setError("Fill Email");
-                }
-                else if(userPassword.equals("")){
-                    password.setError("Fill password");
-                }
-                else if(userGender.equals("Gender")){
-                    Toast.makeText(getApplicationContext(), "Wybierz płeć", Toast.LENGTH_SHORT).show();
-                }
-                else if(userActivityType.equals("Activity Level")){
-                    Toast.makeText(getApplicationContext(), "Wybierz poziom aktywnosci fizycznej", Toast.LENGTH_SHORT).show();
-                }
-                else if(userWeight.equals("")){
-                    weight.setError("Fill Weight");
-                }
-                else if(userHeight.equals("")){
-                    height.setError("Fill Height");
-                }
-                else {
+                String error = validationMap.getOrDefault("", "");
+                assert error != null;
+                if (error.isEmpty()) {
                     authenticationCheck();
+                } else {
+                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+    private void setUpValidationMap(HashMap<String,String> validationMap){
+        validationMap.put(userName, "Wypełnij nazwe");
+        validationMap.put(userEmail, "Wypełnij e-mail");
+        validationMap.put(userPassword, "Wypełnij hasło");
+        validationMap.put("Gender", "Wybierz płeć");
+        validationMap.put("Activity Level", "Wybierz poziom aktywności fizycznej");
+        validationMap.put(userWeight, "Wypełnij wage");
+        validationMap.put(userHeight, "Wypełnij wzrost");
     }
     private void authenticationCheck() {
         mAuth.createUserWithEmailAndPassword(userEmail,userPassword).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -111,21 +91,13 @@ public class RegisterActivity extends AppCompatActivity  {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(getApplicationContext(),"Created Successfully",Toast.LENGTH_SHORT).show();
+
                     String currentUserId=mAuth.getCurrentUser().getUid();
                     HashMap<String,Object> userdataMap=new HashMap<>();
-                    userdataMap.put("name",userName);
-                    userdataMap.put("email",userEmail);
-                    userdataMap.put("password",userPassword);
-                    userdataMap.put("gender",userGender);
-                    userdataMap.put("height",userHeight);
-                    userdataMap.put("activityType",userActivityType);
-                    userdataMap.put("weight",userWeight);
-                    userdataMap.put("age",userAge);
 
-                    databaseReference.child("users").child(currentUserId).updateChildren(userdataMap);
-
-                    Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(intent);
+                    makeUserDataMap(userdataMap);
+                    saveUser(currentUserId,userdataMap);
+                    startLoginIntent();
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Error",Toast.LENGTH_SHORT).show();
@@ -133,6 +105,32 @@ public class RegisterActivity extends AppCompatActivity  {
             }
         });
     }
+    private void makeUserDataMap(HashMap<String,Object> userdataMap){
+        userdataMap.put("name",userName);
+        userdataMap.put("email",userEmail);
+        userdataMap.put("password",userPassword);
+        userdataMap.put("gender",userGender);
+        userdataMap.put("height",userHeight);
+        userdataMap.put("activityType",userActivityType);
+        userdataMap.put("weight",userWeight);
+        userdataMap.put("age",userAge);
+    }
+    private void saveUser(String currentUserId, HashMap<String,Object> userdataMap){
+        databaseReference.child("users").child(currentUserId).updateChildren(userdataMap);
+    }
+    private void startLoginIntent(){
+        Intent intent=new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+    }
+    private void setUpGenderSpinner(){
+        ArrayAdapter<CharSequence> adapterGender = ArrayAdapter.createFromResource(this, R.array.genders, android.R.layout.simple_spinner_item);
+        adapterGender.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gender.setAdapter(adapterGender);
 
-
+    }
+    private void setUpActivityTypeSpinner(){
+        ArrayAdapter<CharSequence> adapterActivity = ArrayAdapter.createFromResource(this, R.array.activityType, android.R.layout.simple_spinner_item);
+        adapterActivity.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        activityType.setAdapter(adapterActivity);
+    }
 }

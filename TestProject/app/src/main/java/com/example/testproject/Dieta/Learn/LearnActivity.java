@@ -1,9 +1,7 @@
 package com.example.testproject.Dieta.Learn;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.testproject.Dieta.Quiz.QuizActivity;
@@ -28,11 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LearnActivity extends AppCompatActivity {
-    private int learntextindex= 0, learntextcount = 0;
-    ShapeableImageView learnImg;
+    private int textindex= 0, textcount = 0;
+    private ShapeableImageView Img;
 
-    TextView learnTV;
-    Button learnSubmitButton;
+    private TextView learningtext;
+    private Button SubmitButton;
     private ProgressBar progressBarLearn;
 
     @Override
@@ -40,9 +39,9 @@ public class LearnActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn);
 
-        learnSubmitButton = findViewById(R.id.submitButtonLearn);
-        learnImg = findViewById(R.id.learningImage);
-        learnTV = findViewById(R.id.learningText);
+        SubmitButton = findViewById(R.id.submitButtonLearn);
+        Img = findViewById(R.id.learningImage);
+        learningtext = findViewById(R.id.learningText);
         progressBarLearn = findViewById(R.id.progressBarLearn);
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -52,26 +51,7 @@ public class LearnActivity extends AppCompatActivity {
         learningref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                List<String> learningList = new ArrayList<>();
-                List<String> learningImgList = new ArrayList<>();
-
-                for (DataSnapshot learingsnapshot : dataSnapshot.getChildren()) {
-                    String learningString = learingsnapshot.child("tresc").getValue(String.class);
-                    String learnImgUrl = learingsnapshot.child("lurl").getValue(String.class);
-
-                    learningList.add(learningString);
-                    learningImgList.add(learnImgUrl);
-                }
-                // Pobieranie treści do nauki i URL obrazków z bazy danych
-
-                if (learningList.size() > 0) {
-                    String learningString = learningList.get(learntextindex);
-                    String learnImgUrl = learningImgList.get(learntextindex);
-
-                    learnTV.setText(learningString);
-                    Glide.with(LearnActivity.this).load(learnImgUrl).into(learnImg);
-                    // Wyświetlanie treści do nauki i obrazka na podstawie indeksu
-                }
+                fetchLearningData(dataSnapshot);
             }
 
             @Override
@@ -80,47 +60,58 @@ public class LearnActivity extends AppCompatActivity {
             }
         });
 
-        learnSubmitButton.setOnClickListener(new View.OnClickListener() {
+        SubmitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                learntextcount++;
-                learntextindex++;
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference learningref = database.getReference("learningtext");
-                learningref.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        List<String> learningList = new ArrayList<>();
-                        List<String> learningImgList = new ArrayList<>();
-
-                        for (DataSnapshot learingsnapshot : dataSnapshot.getChildren()) {
-                            String learningString = learingsnapshot.child("tresc").getValue(String.class);
-                            String learnImgUrl = learingsnapshot.child("lurl").getValue(String.class);
-                            learningList.add(learningString);
-                            learningImgList.add(learnImgUrl);
+                textcount++;
+                textindex++;
+                if(textindex==6){
+                    startQuizIntent();
+                }else {
+                    learningref.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            fetchLearningData(dataSnapshot);
                         }
-                        if (learningList.size() > learntextindex) {
-                            String learningString = learningList.get(learntextindex);
-                            String learnImgUrl = learningImgList.get(learntextindex);
-
-                            learnTV.setText(learningString);
-                            Glide.with(LearnActivity.this).load(learnImgUrl).into(learnImg);
-                            // Wyświetlanie kolejnej treści do nauki i obrazka na podstawie indeksu
-                        } else {
-                            Intent quizintent = new Intent(LearnActivity.this, QuizActivity.class);
-                            startActivity(quizintent);
-                            // Jeśli skończono naukę, przechodzenie do Activity QuizFragment
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.w("1", "loadLearning:onCancelled", databaseError.toException());
                         }
-                        progressBarLearn.setProgress(learntextcount);
-                        progressBarLearn.setMax(learningList.size());
-                        // Aktualizacja paska postępu nauki
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        Log.w("1", "loadLearning:onCancelled", databaseError.toException());
-                    }
-                });
+                    });
+                }
             }
         });
+    }
+    private void fetchLearningData(DataSnapshot dataSnapshot) {
+        List<String> learningList = new ArrayList<>();
+        List<String> learningImgList = new ArrayList<>();
+
+        for (DataSnapshot learningSnapshot : dataSnapshot.getChildren()) {
+            String learningString = learningSnapshot.child("tresc").getValue(String.class);
+            String learnImgUrl = learningSnapshot.child("lurl").getValue(String.class);
+
+            learningList.add(learningString);
+            learningImgList.add(learnImgUrl);
+        }
+        if (learningList.size() > 0 ) {
+            displayLearningContent(learningList, learningImgList, textindex);
+        }else {
+            Toast.makeText(LearnActivity.this, "Nie ma rekordów w bazie danych", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void displayLearningContent(List<String> learningList, List<String> learningImgList, int textindex) {
+
+            String learningString = learningList.get(textindex);
+            String learnImgUrl = learningImgList.get(textindex);
+            learningtext.setText(learningString);
+            Glide.with(LearnActivity.this).load(learnImgUrl).into(Img);
+
+            progressBarLearn.setProgress(textcount);
+            progressBarLearn.setMax(learningList.size());
+    }
+    private void startQuizIntent(){
+        Intent quizIntent=new Intent(LearnActivity.this, QuizActivity.class);
+        startActivity(quizIntent);
     }
 }

@@ -7,9 +7,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class QuestionGroup {
-    private List<Question> questions;
+    private final List<Question> questions;
     private int currentIndex;
-    private int maxQuestions;
+
     public QuestionGroup() {
         questions = new ArrayList<>();
         currentIndex = -1;
@@ -30,17 +30,5 @@ public class QuestionGroup {
         }
         return questions.get(currentIndex);
     }
-    public void shuffleQuestions() {
-        Collections.shuffle(questions);
-    }
-    public int getNumberOfQuestions() {
-        return questions.size();
-    }
-    public int getNumberOfCorrectAnswers() {
-        int count = 0;
-        for (Question question : questions) {
 
-        }
-        return count;
-    }
 }

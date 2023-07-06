@@ -2,11 +2,11 @@ package com.example.testproject.Trening;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -25,74 +25,55 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class CreateTrainingPlanActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private ImageView addExercise,delExercise;
-    private Button createPlanBtn;
     private EditText plansNameEditText;
-    private List<String> selectedExerciseNames;
     private String planNamesText;
 
-
+    private final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+    private final ExercisesPlanAdapter eAdapter = new ExercisesPlanAdapter(databaseReference);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_training_plan);
 
-        selectedExerciseNames = new ArrayList<>();
+
         recyclerView=findViewById(R.id.rv_plan_create);
-        addExercise=findViewById(R.id.add_exercise_img);
-        delExercise=findViewById(R.id.delete_exercise_img);
-        createPlanBtn=findViewById(R.id.save_plan_btn);
+        ImageView addExercise = findViewById(R.id.add_exercise_img);
+        ImageView delExercise = findViewById(R.id.delete_exercise_img);
+        Button createPlanBtn = findViewById(R.id.save_plan_btn);
         plansNameEditText=findViewById(R.id.my_plan_name_ET);
 
+        setRecyclerView();
 
         plansNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 planNamesText= String.valueOf(plansNameEditText.getText());
             }
-
             @Override
             public void afterTextChanged(Editable s) {
                 planNamesText= String.valueOf(plansNameEditText.getText());
             }
         });
-
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        //stworzenie odwołania do bazy danych do ustawiania spinnera
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
-        //zainicjowanie adaptera z argumentem odwolania sie do bazy danych
-        ExercisesPlanAdapter eAdapter = new ExercisesPlanAdapter(databaseReference);
-        //ustawienie adaptera dla recyclerview
-        recyclerView.setAdapter(eAdapter);
-
         addExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 eAdapter.addItem();
             }
         });
-        //dodaj item do planu
-
         delExercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 eAdapter.delItem();
             }
         });
-        //usun item z planu
-
         createPlanBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,12 +84,14 @@ public class CreateTrainingPlanActivity extends AppCompatActivity {
                 }
             }
         });
-
+    }
+    private void setRecyclerView() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        recyclerView.setAdapter(eAdapter);
     }
     private void showToast(String message) {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
-
     private void saveExercisesToDatabase() {
         DatabaseReference plansRef = FirebaseDatabase.getInstance().getReference().child("My plans");
         String currentUserIdd = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -126,7 +109,7 @@ public class CreateTrainingPlanActivity extends AppCompatActivity {
                         String spinnerText = spinnerTV.getText().toString();
                         String seriesText = seriesET.getText().toString();
                         String repeatsText = repeatsET.getText().toString();
-                        if (spinnerText != null && !spinnerText.equals("Wybierz ćwiczenie")) {
+                        if (!spinnerText.equals("Wybierz ćwiczenie")) {
                             DatabaseReference exercisesRef = FirebaseDatabase.getInstance().getReference().child("exercises");
                             exercisesRef.orderByChild("name").equalTo(spinnerText).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -145,10 +128,9 @@ public class CreateTrainingPlanActivity extends AppCompatActivity {
                         }
                     }
                     showToast("Plan dodano pomyślnie");
-                    /*goToMyTrainingPlansFragment();*/
+                    startTrainingPlanIntent();
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 showToast("Błąd odczytu z bazy danych");
@@ -166,6 +148,7 @@ public class CreateTrainingPlanActivity extends AppCompatActivity {
 
         String currentUserIdd = FirebaseAuth.getInstance().getCurrentUser().getUid();
         String exerciseId = databaseReference.child("My plans").child(currentUserIdd).child(planNamesText).push().getKey();
+
         DatabaseReference exerciseRef = databaseReference.child("My plans").child(currentUserIdd).child(planNamesText).child(exerciseId);
 
         exerciseRef.child("reps").setValue(repeatsText);
@@ -175,13 +158,9 @@ public class CreateTrainingPlanActivity extends AppCompatActivity {
         exerciseRef.child("recipeType").setValue(recipeType);
         exerciseRef.child("description").setValue(description);
     }
-
-    /*public void goToMyTrainingPlansFragment() {
-        My_training_plans_fragment my_training_plans_fragment=new My_training_plans_fragment();
-        FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container_training, my_training_plans_fragment);
-        fragmentTransaction.commit();
-    }*/
+    private void startTrainingPlanIntent() {
+        Intent trainPlanIntent=new Intent(CreateTrainingPlanActivity.this,MyTrainingPlansActivity.class);
+        startActivity(trainPlanIntent);
+    }
 
 }
