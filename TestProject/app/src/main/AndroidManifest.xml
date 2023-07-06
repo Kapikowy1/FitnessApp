@@ -46,6 +46,7 @@
             android:exported="false" />
         <activity
             android:name=".Dieta.DietPlan.MyDietPlansActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:exported="false" />
         <activity
             android:name=".Trening.CurrentPlanActivity"
