@@ -61,7 +61,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/allura"
             android:text="Szukaj  ćwiczeń"
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="40sp"
             android:textStyle="bold"
 
